@@ -1,6 +1,6 @@
 # Quarkus Kafka Quick start
 
-This project attempts to be the simplest possible project that provides a manual workflow for deploying an aplication with the following features:
+This project attempts to be the simplest possible project that provides a manual workflow for deploying an application with the following features:
 
    * Written using Java and Maven.
    * Appache Kafka mutual-tls Connectivity
