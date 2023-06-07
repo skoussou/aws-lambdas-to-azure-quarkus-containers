@@ -13,7 +13,7 @@ This project attempts to be the simplest possible project that provides a manual
 
 **During the lambda migration, all of the manual steps in this workflow will be replaced by automated CICD piplines**
 
-# Migrating code of Message Triggered Based (Long Running) Service from Lambda to Quarkus Application
+# Migrating a Message Triggered Based (Long Running) Lambda to Quarkus Application
 
 * For a lambda which starts as the result of a _REST_ call and creates a message/event, place the lambda code in `EventResource.java#in` method adjusting appropriately the `@Path` configurations and HTTP Method (eg. `@POST`) to match the lambda's REST trigger.
 * For a lambda which starts as a result of a _message_, place the lambda code in `EventResource.java#consumeQuickstartKafkaIn` method adjusting the `@Incoming` configuration to the `Topic` name monitored by the lambda (adjust all occurrences as configs also in `values.yaml` and `application.properties`).
