@@ -31,7 +31,7 @@ It's dependencies are defined in the pom.xml, of note is the dependency for Kafk
 
 ### A Rest Endpoint that forwards the message to a Kafka topic
 
-An example of a methos that exposes an HTTP REST endpoint and forwards the payload it receives together with a header to a Kafka Topic :
+An example of a method that exposes an HTTP REST endpoint and forwards the payload it receives together with a header to a Kafka Topic :
 
 ```
     @Inject
