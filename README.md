@@ -107,7 +107,7 @@ graph TB
   Node2[Choose a quickstart/skeleton quarkus service] --> Node3[Containerize the application]
   Node3[Containerize the application] -- Path: prepare for deployment --> Node2b[Create Helm Chart]
   Node3[Containerize the application] -- Path: prepare business code --> Node1a[Setup Application Configurations]
-  click Node2 "./how-to-docs/residency-quickstarts.md#list-of-quickstarts-for-the-migration-of-lambdas-to-quarkus" "Choose Quickstart"
+  click Node2 "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/how-to-docs/residency-quickstarts.md#list-of-quickstarts-for-the-migration-of-lambdas-to-quarkus" "Choose Quickstart"
 
 end
 ```
