@@ -397,7 +397,10 @@ cd chart && helm template -f values.yaml . | oc delete -f -
 
 ## Test the application 
 
-run the `test.sh <namespace> <ocp apps.domain>` script in the rest-test folder.
+```
+cd rest-test
+test.sh`
+```
 
 ## Metrics
 

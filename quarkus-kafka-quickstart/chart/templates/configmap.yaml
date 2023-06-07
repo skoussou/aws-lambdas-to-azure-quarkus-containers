@@ -4,8 +4,8 @@ apiVersion: v1
 metadata:
   name: {{ .Values.name }}-application-properties
 data:
-  application.properties: |-
-    kafka.bootstrap.servers={{ .Values.config.kafka.cluster.name }}-kafka-mtls-bootstrap-labs-test.{{ .Values.config.cluster.cluster.domain }}:443
+  application.properties: |- 
+    kafka.bootstrap.servers={{ .Values.config.kafka.cluster.name }}-kafka-bootstrap.lambdas-tests.{{ .Values.config.ocp.cluster.domain }}:9093
     kafka.security.protocol=SSL
     kafka.ssl.truststore.location=truststore/ca.p12
     kafka.ssl.truststore.type=PKCS12
