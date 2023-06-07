@@ -194,7 +194,7 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 
 ## The Code
 
-The source code is in the `/src` folder. The central class is `com.redhat.cloudnative.hellokafka.EventResource.java`.
+The source code is in the `/src` folder. The central class is `com.redhat.cloudnative.kafka.EventResource.java`.
 
 It's dependencies are defined in the pom.xml, of note is the dependency for Kafka
 
