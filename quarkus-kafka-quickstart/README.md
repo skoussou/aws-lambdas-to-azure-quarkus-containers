@@ -3,9 +3,9 @@
 This project attempts to be the simplest possible project that provides a manual workflow for deploying an application with the following features:
 
    * Written using Java and Maven.
-   * Appache Kafka mutual-tls Connectivity
+   * Apache Kafka mutual-tls Connectivity
    * Apache Kafka Publish and Subscribe
-   * Rest endpoint that rceieves an http request and sends the payload to kafka
+   * Rest endpoint that receives an http request and sends the payload to kafka
    * Application built as a container using docker or podman, and pushed to remote registry, in the Azure Container registry.
    * Container deploys to Openshift, and connects to Apache Kafka.
 
