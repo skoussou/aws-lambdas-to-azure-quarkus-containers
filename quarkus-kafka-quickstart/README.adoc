@@ -196,7 +196,7 @@ spec:
 A single partition guarantees message ordering, multiple replicas, message resilience.
 
 
-## Quarkus
+# Quarkus
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
