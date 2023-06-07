@@ -301,7 +301,7 @@ cd image-build
 
 ./image-build.sh [docker|podman]
 
-./image-deploy-to-registry.sh [docker|podman] <REGISTRY_HOST> <REGISTRY_USER> <AZUREREGISTRYNAME>
+./image-deploy-to-registry.sh [docker|podman] <REGISTRY_HOST> <IMAGE_REPO> <REGISTRY_USER> <AZUREREGISTRYNAME>  
 
 ```
 
