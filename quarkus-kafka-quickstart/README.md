@@ -9,7 +9,7 @@ This project attempts to be the simplest possible project that provides a manual
    * Application built as a container using docker or podman, and pushed to remote registry, in the Azure Container registry.
    * Container deploys to Openshift, and connects to Apache Kafka.
 
-**During the lamda migration, all of the manual steps in this workflow will be replaced by automated CICD piplines**
+**During the lambda migration, all of the manual steps in this workflow will be replaced by automated CICD piplines**
 
 # Lambda Source Code Migration
 
