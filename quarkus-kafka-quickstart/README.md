@@ -311,7 +311,7 @@ running these commands will create a image in an azure container registry called
 
 This will build the image and store in a registry local to your laptop.
 
-    <REGISTRY_HOST>/quickstart-kafka/quickstart-kafka:latest
+    <REGISTRY_HOST>/<IMAGE_REPO>/quickstart-kafka:latest
 
 
 # Deploy the Image to OpenShift
