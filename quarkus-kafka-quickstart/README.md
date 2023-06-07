@@ -119,9 +119,6 @@ spec:
 A single partition guarantees message ordering, multiple replicas, message resilience.
 
 
-
-
-
 ## Quarkus
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
@@ -131,9 +128,9 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 ## Running the application in dev mode
 
 * Run locally Kafka
-```shell script
-docker|podman compose-up
-```
+  ```shell script
+  docker|podman compose-up
+  ```
 
 * You can run your application in dev mode that enables live coding using:
   ```shell script
