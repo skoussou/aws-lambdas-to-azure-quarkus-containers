@@ -16,6 +16,81 @@ This project attempts to be the simplest possible project that provides a manual
 * For a lambda which starts as the result of a _REST_ call, place the code in `EventResource.java#in` method adjusting appropriately the `@Path` configurations and HTTP Method (eg. `@POST`) to match the lambda's REST trigger.
 * For a lambda which starts as a result of a _message_, place the code in `EventResource.java#consumeQuickstartKafkaIn` method adjusting the `@Incoming` configuration to the `Topic` name monitored by the lambda (adjust all occurrences as configs also in `values.yaml` and `application.properties`).
 
+## The Code
+
+The source code is in the `/src` folder. The central class is `com.redhat.cloudnative.kafka.EventResource.java`.
+
+It's dependencies are defined in the pom.xml, of note is the dependency for Kafka
+
+```
+    <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
+    </dependency>
+```
+
+### A Rest Endpoint that forwards the message to a Kafka topic
+
+An example of a methos that exposes an HTTP REST endpoint and forwards the payload it receives together with a header to a Kafka Topic :
+
+```
+    @Inject
+    @Channel("quickstart-kafka-out")
+    Emitter<Event> quickstartKafkaOut;
+
+    @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/in")
+    public String in(Event event) throws JsonProcessingException {
+
+        Log.info("Event received from REST : " + mapper.writeValueAsString(event));
+
+        OutgoingKafkaRecordMetadata<String> metadata = OutgoingKafkaRecordMetadata.<String>builder()
+            .withHeaders(new RecordHeaders().add("tracking-id", UUID.randomUUID().toString().getBytes()).add("tenant", "Mytenant".getBytes()))
+            .build();
+
+        event.setType("From : quickstart-kafka-out");
+
+        Message msg = Message.of(event).addMetadata(metadata);
+
+        quickstartKafkaOut.send(msg);
+
+        registry.counter("events", Tags.of("event_type", event.getType())).increment();
+
+        event.setType("From : quickstart-kafka-out");
+
+        return "OK";
+    }
+```
+
+The Channel Emitter is responsible for sending the message to Kafka. More Documentation can be found on this here : https://quarkus.io/guides/kafka#sending-messages-with-emitter
+
+### Subscription to a Kafka topic to react on _incoming_ messages
+
+Below is a code example that subscribes to an incoming message channel and processes the incoming message in the method below :
+
+```
+    @Incoming("quickstart-kafka-in")
+    public CompletionStage<Void> consumeQuickstartKafkaIn(Message<Event> msg) {
+
+        try{
+            Log.info("consumeQuickstartKafkaIn : Event received from Kafka");
+
+            registry.counter("events", Tags.of("event_type", msg.getPayload().getType())).increment();
+
+            Event event = msg.getPayload();
+            Log.info("Payload : "+event);
+        }
+        catch (Exception e) {
+            Log.error(e.getMessage());    
+        }
+        finally {
+            return msg.ack();
+        }
+    }
+```
+
 # Prerequisites
 
    * An Azure login
@@ -192,81 +267,9 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
 
-## The Code
-
-The source code is in the `/src` folder. The central class is `com.redhat.cloudnative.kafka.EventResource.java`.
-
-It's dependencies are defined in the pom.xml, of note is the dependency for Kafka
-
-```
-    <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
-    </dependency>
-```
-
-### A Rest endpoint that forwards the a message to a Kafka topic 
-
-An example of a methos that exposes an HTTP REST endpoint and forwards the payload it receives together with a header to a Kafka Topic :
-
-```
-    @Inject
-    @Channel("quickstart-kafka-out")
-    Emitter<Event> quickstartKafkaOut;
-
-    @POST
-    @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/in")
-    public String in(Event event) throws JsonProcessingException {
-
-        Log.info("Event recieved from REST : " + mapper.writeValueAsString(event));
-
-        OutgoingKafkaRecordMetadata<String> metadata = OutgoingKafkaRecordMetadata.<String>builder()
-            .withHeaders(new RecordHeaders().add("tracking-id", UUID.randomUUID().toString().getBytes()).add("tenant", "Mytenant".getBytes()))
-            .build();
-
-        event.setType("From : quickstart-kafka-out");
-
-        Message msg = Message.of(event).addMetadata(metadata);
-
-        quickstartKafkaOut.send(msg);
-
-        registry.counter("events", Tags.of("event_type", event.getType())).increment();
-
-        event.setType("From : quickstart-kafka-out");
-
-        return "OK";
-    }
-```
-
-The Channel Emitter is responsible for sending the message to Kafka. More Documentation can be found on this here : https://quarkus.io/guides/kafka#sending-messages-with-emitter
 
 
-Below is a code example that subscribes to an incoming message channel and processes the incoming message in the method below :
-
-```
-    @Incoming("hello-kafka-in")
-    public CompletionStage<Void> consumeQuickstartKafkaIn(Message<Event> msg) {
-
-        try{
-            Log.info("consumeQuickstartKafkaIn : Event recieved from Kafka");
-
-            registry.counter("events", Tags.of("event_type", msg.getPayload().getType())).increment();
-
-            Event event = msg.getPayload();
-            Log.info("Payload : "+event);
-        }
-        catch (Exception e) {
-            Log.error(e.getMessage());    
-        }
-        finally {
-            return msg.ack();
-        }
-    }
-```
-
-Notice the message ackknowledgement in the finally block. Always acknowledge messages in some way. More details can be found here : https://quarkus.io/guides/kafka#receiving-messages-from-kafka
+Notice the message acknowledgement in the finally block. Always acknowledge messages in some way. More details can be found here : https://quarkus.io/guides/kafka#receiving-messages-from-kafka
 
 
 
