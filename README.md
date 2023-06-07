@@ -1,92 +1,119 @@
-# aws-lambdas-to-azure-quakus-containers
+# Cookbook for activities to migrate AWS Java Lambda applications to AZURE/OCP
 
+## Prerequisites
+- GitOps with ArgoCD for the service/team has been setup see [Setting up GitOps with ArgoCD for service/team](https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/setup-gitops-service.md)
+- Red Hat OpenShift Pipelines operator has been installed
+- Red Hat OpenShift Service Mesh operator has been installed, `ServiceMeshControlPlane` configured, `ServiceMeshMeberRole` configured with the namespace (see [Service Mesh Setup](https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/servicemesh-setup.md)) 
+- Datadog [has been installed](https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/datadog-integration.md) and configured to have access to this environment
+- *(Optional)* Kafka Operator has been installed and Kafka instance, Kafka Clients, Kafka Topics have been configured [https://github.com/cariad-cloud/residency-kafka-quickstart#prerequisites](https://github.com/cariad-cloud/residency-kafka-quickstart#prerequisites)
+- *(Optional)* Crossplane for database creation is in place and `master_key` and `connection` URL known
 
+## Assumptions
+For this guide, we will assume that your Lambda service is called `banana` to make the examples simple.
 
-## Getting started
+## `Banana` Lambda Migration Flow
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### High Level Migration Flow
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+![High Level Migration FLow](../images/High-Level-Migration-Flow.png)
 
-## Add your files
+### Detailed Migration Flow
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+```mermaid
+graph TB
 
+  subgraph "Promote Applications Across Environments"
+  Node5a[Promotion Namespaces Definition]
+  Node5a -- Optional --> Node5b[Setup ArgoCD Application for CI Pipeline]
+  Node5a --> Node5c[Setup ArgoCD Application for GitOps]
+  click Node5a "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/automate-app-ocp-delivery.md#promotion-namespaces" "Promotion Namespaces"
+  click Node5b "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/automate-app-ocp-delivery.md#create-new-service-pipeline-for-the-service-to-perform-continuous-integration" "CI Pipeline"
+  click Node5c "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/automate-app-ocp-delivery.md#create-gitops-resources-for-the-new-service-to-perform-continuous-delivery" "CD Application"
+  end
+
+  subgraph "Prepare Service for OCP Automated delivery via DevOps Tooling"
+  Node2b[Create Helm Chart]
+  Node2b[Create Helm Charts] --> Node2c[create keyvault content]
+  Node2b[Create Helm charts] --> Node2f[values.yaml]
+  Node2f[values.yaml] -- optional --> Node2r[cosmosdb-claim.yaml]
+  Node2f[values.yaml] -- optional --> Node2s[kafka-topic.yaml]
+  Node2f[values.yaml] -- optional --> Node2d[kafka-user.yaml]
+  Node2f[values.yaml] --> Node2g[configmap.yaml]
+  Node2g[configmap.yaml] --> Node2h[externalsecret.yaml]
+  Node2h[externalsecret.yaml] -- Expectation Someone to Generate the Vault Content --> Node2c[create keyvault content]
+  Node2h[externalsecret.yaml] --> Node2i[roles.yaml]
+  Node2i[roles.yaml] --> Node2j[roleBinding.yaml]
+  Node2j[roleBinding.yaml] --> Node2k[serviceAccount.yaml]
+  Node2k -- either  --> Node2l[deployment.yaml]
+  Node2k -- or --> Node2q[cronjob.yaml]
+  Node2l[deployment.yaml] --> Node2m[service.yaml]
+  Node2m -- either via servicemesh --> Node2n[istio-virtualservice.yaml]
+  Node2m -- or --> Node2o[route.yaml]
+  Node2m -- or --> Node2p[NO EXTERNAL ACCESS]
+  Node2n -- Resources Ready --> Node5a
+  Node2o -- Resources Ready --> Node5a
+  Node2p -- Resources Ready --> Node5a
+  click Node2d "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#kafkauser-kafka-useryaml-resource-configuration-guidelines" "Kafka User Resource"
+  click Node2f "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#valuesyaml-resource-configuration-guidelines" "values.yaml"
+  click Node2g "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#configmap-configmapyaml-resource-configuration-guidelines" "configmap.yaml"
+  click Node2h "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#externalsecret-externalsecretyaml-resource-configuration-guidelines" "externalsecret.yaml"
+  click Node2c "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#externalsecret-externalsecretyaml-resource-configuration-guidelines" "keyvault"
+  click Node2i "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#role-rolesyaml-resource-configuration-guidelines" "roles.yaml"
+  click Node2j "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#rolebinding-rolebindingyaml-resource-configuration-guidelines" "roleBinding.yaml"
+  click Node2k "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#serviceaccount-serviceaccountyaml-resource-configuration-guidelines" "serviceAccount.yaml"
+  click Node2l "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#deployment-deploymentyaml-resource-configuration-guidelines" "deployment.yaml"
+  click Node2q "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#cronjob-cronjobyaml-resource-configuration-guidelines" "cronjob.yaml"
+  click Node2m "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#service-serviceyaml-resource-configuration-guidelines" "service.yaml"
+  click Node2n "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#option-1-istio-virtualservice---for-service-mesh-based-service---resource-configuration-guidelines" "istio-virtualservice.yaml"
+  click Node2o "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#option-2-istio-route---for-non---service-mesh-based-service-----resource-configuration-guidelines" "route.yaml"
+  click Node2r "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#documentdatabase-cosmosdb-claimyaml-resource-configuration-guidelines" "Database Resource"
+  click Node2s "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#kafkatopic-kafka-topicyaml-resource-configuration-guidelines" "Kafka Topic Resource"
+  end
+
+  subgraph "Activities to Setup and Integrate with External Dependencies"
+  Node3a[External Dependencies]
+  Node3a[External Dependencies] --> Node3b[Integrating with CosmosDB]
+  Node3a[External Dependencies] --> Node3c[Integrating with Kafka]
+  Node3b[Integrating with CosmosDB] -- Code Ready --> Node5a
+  Node3c[Integrating with Kafka]  -- Code Ready --> Node5a
+  click Node3b "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/migrate-business-application-code-in-quarkus.md#connecting--interacting-to-a-cosmosdb" "CosmosDB"
+  click Node3c "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/migrate-business-application-code-in-quarkus.md#connecting--interacting-with-kafka" "Kafka"
+  end
+
+  subgraph "Migrate new Service Code from Lambda to Quarkus"
+  Node1a[Setup Application Configurations]
+  Node1a -- feed configs into --> Node2g[configmap.yaml]
+  Node1a -- feed sensitive configs into --> Node2h[externalsecret.yaml]
+  Node1b[Setup Application Metrics]
+  Node1a --> Node1b[Setup Application Metrics]
+  Node1b -- Option-1 --> Node1c[Migrating code into CronJob Quarkus Application Main]
+  Node1b -- Option-2 --> Node1d[Migrating code into Long-running REST API Quarkus ApplicationScoped]
+  Node1b -- Option-3 --> Node1e[Migrating code into Quarkus Scheduled]
+  Node1b -- Option-4 --> Node1f[Migrating code into Kafka Triggered Quarkus]
+  Node1c -- Optional --> Node3a[External Dependencies]
+  Node1d -- Optional --> Node3a[External Dependencies]
+  Node1e -- Optional --> Node3a[External Dependencies]
+  Node1f -- Optional --> Node3a[External Dependencies]
+  click Node1a "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/container-guidelines.md#a1---application-configuration" "App Configuration"
+  click Node1b "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/container-guidelines.md#a2---application-metrics" "Setup Application Metrics"
+  click Node1c "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/migrate-business-application-code-in-quarkus.md#option-a---migrating-code-of-cronjob-type-service-from-lambda-to-quarkus-application-main" "Start Migrating a CronJob"
+  click Node1d "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/migrate-business-application-code-in-quarkus.md#option-b---migrating-code-of-rest-long-running-type-service-from-lambda-to-quarkus-applicationscoped-application" "Start Migrating a Rest Service"
+  click Node1e "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/migrate-business-application-code-in-quarkus.md#option-c---migrating-code-of-scheduled-type-long-running-service-from-lambda-to-quarkus-scheduled-application" "Start Migrating a Scheduled Service"
+  click Node1f "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/migrate-business-application-code-in-quarkus.md#option-d---migrating-code-of-message-triggered-based-long-running-service-from-lambda-to-quarkus-application" "Start Migrating a Message Triggered Service"
+  end
+
+  subgraph "Migrating an AWS Lambda Service to Quarkus Container Service"
+  Node1[Start Migrating a Service] --> Node2[Choose a quickstart/skeleton quarkus service]
+  Node2[Choose a quickstart/skeleton quarkus service] --> Node3[Containerize the application]
+  Node3[Containerize the application] -- Path: prepare for deployment --> Node2b[Create Helm Chart]
+  Node3[Containerize the application] -- Path: prepare business code --> Node1a[Setup Application Configurations]
+  click Node2 "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/residency-quickstarts.md#list-of-quickstarts-for-the-migration-of-lambdas-to-quarkus" "Choose Quickstart"
+
+end
 ```
-cd existing_repo
-git remote add origin https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers.git
-git branch -M main
-git push -uf origin main
-```
 
-## Integrate with your tools
 
-- [ ] [Set up project integrations](https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/-/settings/integrations)
 
-## Collaborate with your team
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
 
-## Test and Deploy
 
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
