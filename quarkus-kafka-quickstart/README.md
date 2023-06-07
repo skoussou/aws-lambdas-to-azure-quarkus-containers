@@ -143,7 +143,7 @@ spec:
     storage:
       size: 30Gi
       type: persistent-claim
-    version: 3.1.0
+    version: 3.3.1
   zookeeper:
     replicas: 3
     storage:
@@ -193,8 +193,13 @@ spec:
 
 A single partition guarantees message ordering, multiple replicas, message resilience.
 
+* Apply the prerequisites `CR` in an Openshift cluster
+  ```shell script
+  oc apply -f prerequisites/prerequisites.yaml
+  ```
 
-## Quarkus
+
+# Quarkus
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
@@ -301,7 +306,7 @@ cd image-build
 
 ./image-build.sh [docker|podman]
 
-./image-deploy-to-registry.sh [docker|podman] <REGISTRY_HOST> <IMAGE_REPO> <REGISTRY_USER> <AZUREREGISTRYNAME>  
+./image-deploy-to-registry.sh [docker|podman] <REGISTRY_HOST> <IMAGE_REPO> <REGISTRY_USER> <AZUREREGISTRYNAME>
 
 ```
 
@@ -337,9 +342,10 @@ First Login, get the login command from the webcosole. Click on your name in top
 oc login --server=https://api.<DOMAIN>:6443 -u <username> -p <password)
 
 ```
+
 ## Deploy the container image to OCP
 
-This repo contins a folder called **chart**, this contains a Helm chart that deploys this application. The following files are templates :
+This repo contains a folder called **chart**, this contains a Helm chart that deploys this application. The following files are templates :
 
    * `configmap.yaml` : defines the application.properies that configures our quarkus application
    * `deployment.yaml` : defines the details of how are image is deployed
@@ -350,13 +356,13 @@ This repo contins a folder called **chart**, this contains a Helm chart that dep
    * `service.yml` : defines a loadbalancer to distribute traffic accross multiple podscontaing our app
    * `serviceAccount.yaml` : defines a service account for our deployment which is allowd to view secrets.
 
-Here is the values file, containg the valuses that will be injected into this template :
+Here is the `values` file, contains the values that will be injected into this template (*UPDATE ACCORDINGLY*):
 
 ```
 name: quickstart-kafka
 image:
-  registry: <registryname>.azurecr.io #Point to registry
-  repository: quickstart-kafka
+  registry: <registryname>.azurecr.io     #Point to registry
+  repository: quickstart-kafka            #Point to repository
   name: quickstart-kafka
   version: latest
 
@@ -370,7 +376,7 @@ config:
     outtopic: quickstart-kafka-out
   ocp:
     cluster:
-      domain: apps.<YOUR-DOMAIN>.com
+      domain: apps.<YOUR-DOMAIN>.com     #Point to K8s
 ```
 
 The template is usually used form within a CICD pipeline and executed by ArgoCD, but we can deploy it from the command line for convenience. The following command deploys from the command line, assuming that you are logged onto openshift and in your target project :
