@@ -135,7 +135,7 @@ this file is used in a working application and quick sstart here : [https://gith
 If an application needs to be accessible beyond the Openshift cluster for ingress, and it is part of the Service Mesh.
 
 * Filename: `istio-virtualservice.yaml`
-* Follow the guidelines in [Guidelines for getting traffic into a Service Mesh based Service](routing-into-servicemesh.md) to update the selected `quickstart` for the purposes of your service.
+* Follow the guidelines in [Guidelines for getting traffic into a Service Mesh based Service](servicemesh-routing-into.md) to update the selected `quickstart` for the purposes of your service.
 
 ### (Option 2) Openshift `Route` - For NON - Service Mesh Based service - Resource Configuration Guidelines
 
