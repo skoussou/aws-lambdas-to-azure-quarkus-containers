@@ -80,7 +80,6 @@ Secrets necessary to connect to this cluster without mtls will be created in the
 
 This Kafka cluster has three brokers, persistent storage. Additionally an endpoint where users can connect and establish identity cryptographically with mutual tls. Secrets for this user will be automatically created.
 
-
 Below is the Custom Resource (`CR`) to create a user for mtls authentication :
 
 ```
@@ -96,10 +95,10 @@ spec:
     type: tls
 ```
 
-Not the refernce to the cluster defined above.
+Note the reference to the cluster via a label defined above.
 
 
-Below is the Customer Resource that defines a Kafka Topic, not tics that it defines the time a message is allowed to stay on the topic, and the total size in bytes of all messages in the topic, when one of these thresholds is reached old messages are evicted.
+Below is the Custom Resource (`CR`) that defines a Kafka Topic, not tics that it defines the time a message is allowed to stay on the topic, and the total size in bytes of all messages in the topic, when one of these thresholds is reached old messages are evicted.
 
 ```
 apiVersion: kafka.strimzi.io/v1beta2
