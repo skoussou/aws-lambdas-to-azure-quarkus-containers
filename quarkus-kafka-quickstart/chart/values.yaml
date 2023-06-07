@@ -1,0 +1,21 @@
+name: quickstart-kafka
+image:
+  registry: <registryname>.azurecr.io #Point to registry
+  repository: quickstart-kafka
+  name: quickstart-kafka
+  version: latest
+
+config:
+  loglevel: INFO       
+  kafka:
+    cluster: 
+      name: wc-test-kafka-cluster
+    user: quickstart-kafka-user
+    intopic: quickstart-kafka-in
+    outtopic: quickstart-kafka-out
+  ocp:
+    cluster:
+      domain: apps.<YOUR-DOMAIN>.com
+      
+
+  
