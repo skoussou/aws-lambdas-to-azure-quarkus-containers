@@ -3,8 +3,8 @@
 ## Prerequisites
 - GitOps with ArgoCD for the service/team has been setup see [Setting up GitOps with ArgoCD for service/team](https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/setup-gitops-service.md)
 - Red Hat OpenShift Pipelines operator has been installed
-- Red Hat OpenShift Service Mesh operator has been installed, `ServiceMeshControlPlane` configured, `ServiceMeshMeberRole` configured with the namespace (see [Service Mesh Setup](https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/servicemesh-setup.md)) 
-- Datadog [has been installed](https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/datadog-integration.md) and configured to have access to this environment
+- Red Hat OpenShift Service Mesh operator has been installed, `ServiceMeshControlPlane` configured, `ServiceMeshMemberRole` configured with the namespace (see [Service Mesh Setup](how-to-docs/servicemesh-setup.md)) 
+- Datadog [has been installed](how-to-docs/datadog-integration.md) and configured to have access to this environment
 - *(Optional)* Kafka Operator has been installed and Kafka instance, Kafka Clients, Kafka Topics have been configured [https://github.com/cariad-cloud/residency-kafka-quickstart#prerequisites](https://github.com/cariad-cloud/residency-kafka-quickstart#prerequisites)
 - *(Optional)* Crossplane for database creation is in place and `master_key` and `connection` URL known
 
