@@ -1,0 +1,146 @@
+# Setting up Datadog integration
+## Introduction
+This document describes how the Datadog integration was set up during the residency - to serve as a guideline for further work.
+
+## Prerequisites
+Before you set up this integration, the following things are needed.
+1. OpenShift cluster where you have the necessary accesses for installation
+   1. To create secrets
+   2. To set up namespaces 
+   3. To install helm charts.
+2. Datadog access to
+   1. Create/Retrieve Application and API keys
+   2. Set up new integrations
+3. (Optional) ServiceMesh set up inside the cluster.
+
+## Preparation
+First, go to Datadog and install the following integrations:
+1. OpenShift
+2. Kubernetes
+3. Istio
+4. Envoy
+5. Datadog Cluster Agent
+6. CRI Integration
+
+They should not require any input and will just start waiting for data from the Datadog agent. They will set up related dashboards that we will check later for integration success.
+
+Set up a new project/namespace in OpenShift called `datadog`. 
+> In the residency this was done through GitOps using the `residency-gitops` repository through configuration in the `values-tooling.yaml` file. It leveraged `bootstrap-project-1.0.1` from https://redhat-cop.github.io/helm-charts to easily create new namespaces with Group bindings.
+
+Set up or retrieve the API Key and APP key from Datadog.
+> You might need the assistance from a Datadog admin.
+
+Create a [Secret](https://docs.openshift.com/container-platform/3.11/dev_guide/secrets.html) in OpenShift called `datadog-secret` inside the `datadog` namespace, and put the API key and APP key within like this:
+```yaml
+kind: Secret
+apiVersion: v1
+metadata:
+  name: datadog-secret
+  namespace: datadog
+data:
+  api-key: xxx
+  app-key: yyy
+```
+
+(Optional) If your applications are deployed inside a ServiceMesh(ISTIO) - you will need to associated the `datadog` project/namespace with that ServiceMesh. Otherwise the Datadog agent will not be able to query metrics and logs from the pods within the ServiceMesh.
+```yaml
+apiVersion: maistra.io/v1
+kind: ServiceMeshMemberRoll
+metadata:
+  name: my-roll
+spec:
+  members:
+  ... <other members here>
+  - datadog
+```
+
+## Installation (Helm chart)
+We are going to install the official Datadog helm chart. [The best is to read the instructions they provide in their documentation](https://github.com/DataDog/helm-charts/tree/main/charts/datadog)
+
+During the residency we installed the version `datadog-2.36.0` with the following values configuration. This was based on the base configuration example provided for OpenShift in the Documentation - https://docs.datadoghq.com/containers/kubernetes/distributions/?tab=helm&tabs=helm#Openshift - with some alterations for our use case.
+```yaml
+datadog:
+  # Should point towards the secret you created earlier
+  apiKeyExistingSecret: datadog-secret
+  appKeyExistingSecret: datadog-secret
+  # At the time of the residency, WirelessCar had its Datadog organizations in Europe
+  site: datadoghq.eu
+  clusterName: residency-cluster
+  # Compability for CRIO (Docker is assumed by default)
+  criSocketPath: /var/run/crio/crio.sock
+  kubelet:
+    tlsVerify: false
+  clusterChecks:
+    enabled: true
+  # Log collection
+  logs:
+    enabled: true
+  # Trace collection
+  apm:
+    enabled: true
+    portEnabled: true
+  # Kubernetes collection
+  processAgent:
+    processCollection: true
+  networkMonitoring:
+    enabled: true
+agents:
+  podAnnotations:
+  # Necessary if running the Datadog agent within the ServiceMesh
+    sidecar.istio.io/inject: "false"
+  podSecurity:
+    securityContextConstraints:
+    # Automatically sets up SecurityContextConstraints for the agent
+      create: true
+  tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/infra
+    operator: Exists
+clusterAgent:
+  podSecurity:
+    securityContextConstraints:
+    # Automatically sets up SecurityContextConstraints for the cluster agent
+      create: true
+  podAnnotations:
+  # Necessary if running the Datadog agent within the ServiceMesh
+    sidecar.istio.io/inject: "false"
+kube-state-metrics:
+  securityContext:
+    enabled: false
+```
+
+(Optional) If you have ServiceMesh installed, you also want to configure the ServiceMesh Control plane for autodiscovery by Datadog. See below example.
+```yaml
+---
+apiVersion: maistra.io/v2
+kind: ServiceMeshControlPlane
+metadata:
+  name: my-mesh
+spec:
+  runtime:
+    components:
+      pilot:
+        pod:
+          metadata:
+            annotations:
+              ad.datadoghq.com/discovery.check_names: '["istio"]'
+              ad.datadoghq.com/discovery.init_configs: '[{}]'
+              ad.datadoghq.com/discovery.instances: '[{"istiod_endpoint": "http://%%host%%:15014/metrics", "use_openmetrics": true }]'      
+```
+
+## Verification and usage
+
+You should now be able to check the autogenerated dashboards and verify that the expected metrics are being ingested. For example
+
+* `Istio - Overview (v1.5+) - Openmetrics`
+* `Kubernetes - Overview`
+
+Also, you should now be able to set up your applications for autodiscovery. [Use the Datadog autodiscovery annotations](https://docs.datadoghq.com/containers/kubernetes/integrations/?tabs=kubernetesadv2) to [enable metrics](https://docs.datadoghq.com/containers/kubernetes/prometheus/?tabs=helm) and [logging ingestion](https://docs.datadoghq.com/containers/kubernetes/log/?tabs=helm#autodiscovery).
+
+See the following guides for usage:
+* [Tagging](datadog-tagging.md)
+* [Logging](datadog-log-forwarding.md)
+* [Metrics](datadog-app-metrics.md)
