@@ -23,6 +23,5 @@
 
 ## Message Initiated microservice (Deployment Based OCP) Quarkus Quickstart
 
-* github name: `cariad-cloud/residency-kafka-quickstart`
-* github repository: [`https://github.com/cariad-cloud/residency-kafka-quickstart`](https://github.com/cariad-cloud/residency-kafka-quickstart)
-* quickstart characteristics: this quickstart is a good place to start if you are building and event or message driven application, it demonstrates, connecting and authenticating with Kafka, publishing and subscribing to messages. 
+* git repository: [`quarkus-kafka-quickstart`](https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/quarkus-kafka-quickstart)
+* quickstart characteristics: this quickstart is a good place to start if you are building an event or message driven application, it demonstrates, connecting and authenticating with Kafka, publishing and subscribing to messages. 
