@@ -215,7 +215,7 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 
 * Run locally Kafka
   ```shell script
-  docker|podman compose-up
+  docker|podman-compose up
   ```
 
 * You can run your application in dev mode that enables live coding using:
