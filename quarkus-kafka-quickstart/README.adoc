@@ -17,6 +17,10 @@ This project attempts to be the simplest possible project that provides a manual
 
 # Migrating a Message Triggered Based (Long Running) Lambda to Quarkus Application
 
+* Identify the main Lambda Function and start code migration from it eg.
+[source,JAVA]
+public List<String> handleRequest(SQSEvent event, Context context)
+
 * For a lambda which starts as the result of a _REST_ call and creates a message/event, place the lambda code in `EventResource.java#in` method adjusting appropriately the `@Path` configurations and HTTP Method (eg. `@POST`) to match the lambda's REST trigger.
 * For a lambda which starts as a result of a _message_, place the lambda code in `EventResource.java#consumeQuickstartKafkaIn` method adjusting the `@Incoming` configuration to the `Topic` name monitored by the lambda (adjust all occurrences as configs also in `values.yaml` and `application.properties`).
 
@@ -26,47 +30,48 @@ The source code is in the `/src` folder. The central class is `com.redhat.cloudn
 
 It's dependencies are defined in the pom.xml, of note is the dependency for Kafka
 
-```
-    <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
-    </dependency>
-```
+[source,xml]
+<dependency>
+  <groupId>io.quarkus</groupId>
+  <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
+</dependency>
+
 
 ### A Rest Endpoint that forwards the message to a Kafka topic
 
 An example of a method that exposes an HTTP REST endpoint and forwards the payload it receives together with a header to a Kafka Topic :
 
-```
-    @Inject
-    @Channel("quickstart-kafka-out")
-    Emitter<Event> quickstartKafkaOut;
+[source,JAVA]
+----
+@Inject
+@Channel("quickstart-kafka-out")
+Emitter<Event> quickstartKafkaOut;
 
-    @POST
-    @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/in")
-    public String in(Event event) throws JsonProcessingException {
+@POST
+@Produces(MediaType.TEXT_PLAIN)
+@Consumes(MediaType.APPLICATION_JSON)
+@Path("/in")
+public String in(Event event) throws JsonProcessingException {
 
-        Log.info("Event received from REST : " + mapper.writeValueAsString(event));
+    Log.info("Event received from REST : " + mapper.writeValueAsString(event));
 
-        OutgoingKafkaRecordMetadata<String> metadata = OutgoingKafkaRecordMetadata.<String>builder()
-            .withHeaders(new RecordHeaders().add("tracking-id", UUID.randomUUID().toString().getBytes()).add("tenant", "Mytenant".getBytes()))
-            .build();
+    OutgoingKafkaRecordMetadata<String> metadata = OutgoingKafkaRecordMetadata.<String>builder()
+        .withHeaders(new RecordHeaders().add("tracking-id", UUID.randomUUID().toString().getBytes()).add("tenant", "Mytenant".getBytes()))
+        .build();
 
-        event.setType("From : quickstart-kafka-out");
+    event.setType("From : quickstart-kafka-out");
 
-        Message msg = Message.of(event).addMetadata(metadata);
+    Message msg = Message.of(event).addMetadata(metadata);
 
-        quickstartKafkaOut.send(msg);
+    quickstartKafkaOut.send(msg);
 
-        registry.counter("events", Tags.of("event_type", event.getType())).increment();
+    registry.counter("events", Tags.of("event_type", event.getType())).increment();
 
-        event.setType("From : quickstart-kafka-out");
+    event.setType("From : quickstart-kafka-out");
 
-        return "OK";
-    }
-```
+    return "OK";
+}
+----
 
 The Channel Emitter is responsible for sending the message to Kafka. More Documentation can be found on this here : https://quarkus.io/guides/kafka#sending-messages-with-emitter
 
@@ -74,26 +79,27 @@ The Channel Emitter is responsible for sending the message to Kafka. More Docume
 
 Below is a code example that subscribes to an incoming message channel and processes the incoming message in the method below :
 
-```
-    @Incoming("quickstart-kafka-in")
-    public CompletionStage<Void> consumeQuickstartKafkaIn(Message<Event> msg) {
+[source,JAVA]
+----
+@Incoming("quickstart-kafka-in")
+public CompletionStage<Void> consumeQuickstartKafkaIn(Message<Event> msg) {
 
-        try{
-            Log.info("consumeQuickstartKafkaIn : Event received from Kafka");
+    try{
+        Log.info("consumeQuickstartKafkaIn : Event received from Kafka");
 
-            registry.counter("events", Tags.of("event_type", msg.getPayload().getType())).increment();
+        registry.counter("events", Tags.of("event_type", msg.getPayload().getType())).increment();
 
-            Event event = msg.getPayload();
-            Log.info("Payload : "+event);
-        }
-        catch (Exception e) {
-            Log.error(e.getMessage());    
-        }
-        finally {
-            return msg.ack();
-        }
+        Event event = msg.getPayload();
+        Log.info("Payload : "+event);
     }
-```
+    catch (Exception e) {
+        Log.error(e.getMessage());
+    }
+    finally {
+        return msg.ack();
+    }
+}
+----
 
 # Prerequisites
 
@@ -105,7 +111,8 @@ Below is a code example that subscribes to an incoming message channel and proce
 
 Below is an example of a Custom Resource (`CR`) that creates a Kafka cluster.
 
-```
+[source,YAML]
+----
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
@@ -153,7 +160,7 @@ spec:
     storage:
       size: 10Gi
       type: persistent-claim
-```
+----
 
 Secrets necessary to connect to this cluster without mtls will be created in the same namespace.
 
@@ -161,7 +168,8 @@ This Kafka cluster has three brokers, persistent storage. Additionally an endpoi
 
 Below is the Custom Resource (`CR`) to create a user for mtls authentication :
 
-```
+[source,YAML]
+----
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:
@@ -172,14 +180,15 @@ metadata:
 spec:
   authentication:
     type: tls
-```
+----
 
 Note the reference to the cluster via a label defined above.
 
 
 Below is the Custom Resource (`CR`) that defines a Kafka Topic, not tics that it defines the time a message is allowed to stay on the topic, and the total size in bytes of all messages in the topic, when one of these thresholds is reached old messages are evicted.
 
-```
+[source,YAML]
+----
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
@@ -193,14 +202,17 @@ spec:
     segment.bytes: 1073741824
   partitions: 1
   replicas: 3
-```
+----
 
 A single partition guarantees message ordering, multiple replicas, message resilience.
 
 * Apply the prerequisites `CR` in an Openshift cluster
-  ```shell script
-  oc apply -f prerequisites/prerequisites.yaml
-  ```
++
+[source]
+----
+shell script
+oc apply -f prerequisites/prerequisites.yaml
+----
 
 
 # Quarkus
@@ -212,51 +224,68 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 ## Running the application in dev mode
 
 * Run locally Kafka
-  ```shell script
-  docker|podman compose-up
-  ```
++
+[source]
+----
+shell script
+docker|podman compose-up
+----
 
 * You can run your application in dev mode that enables live coding using:
-  ```shell script
-  mvn compile quarkus:dev
-  ```
++
+[source]
+----
+mvn compile quarkus:dev
+----
 
 * Listen on the messages arriving on `KafkaTopic`
-  * `quickstart-kafka-out`
-     ```shell script
-     docker|podman exec -it <CONTAINER_ID> ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic quickstart-kafka-out --from-beginning
-     ```
-  * `quickstart-kafka-in`
-     ```shell script
-     docker|podman exec -it <CONTAINER_ID> ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic quickstart-kafka-in --from-beginning
-     ```
+** `quickstart-kafka-out`
++
+[source]
+----
+docker|podman exec -it <CONTAINER_ID> ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic quickstart-kafka-out --from-beginning
+----
+** `quickstart-kafka-in`
++
+[source]
+----
+docker|podman exec -it <CONTAINER_ID> ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic quickstart-kafka-in --from-beginning
+----
     
 ### Test Locally
 
 #### `REST` -> `Kafka`
 
 * Send Rest request
-  ```shell script
-  curl -v -d "@rest-test/event.json"  -H "Content-Type: application/json" -X POST http://localhost:8080/event/in
-  ```
-  * Result in logs
-  ```shell script
-  2023-06-07 15:24:36,385 INFO  [com.red.clo.kaf.EventResource] (executor-thread-1) Event received from REST : {"id":"1","type":"hello-kafka-http-req","data":{"sim":"yes please","make":"id4"}}
-  2023-06-07 15:24:36,423 WARN  [org.apa.kaf.cli.NetworkClient] (kafka-producer-network-thread | kafka-producer-quickstart-kafka-out) [Producer clientId=kafka-producer-quickstart-kafka-out] Error while fetching metadata with correlation id 4 : {quickstart-kafka-out=LEADER_NOT_AVAILABLE}
-  2023-06-07 15:29:09,974 INFO  [com.red.clo.kaf.EventResource] (executor-thread-1) Event recieved from REST : {"id":"1","type":"hello-kafka-http-req","data":{"sim":"yes please","make":"id4"}}
-  ```
++
+[source]
+----
+curl -v -d "@rest-test/event.json"  -H "Content-Type: application/json" -X POST http://localhost:8080/event/in
+----
+** Result in logs
++
+[source]
+----
+2023-06-07 15:24:36,385 INFO  [com.red.clo.kaf.EventResource] (executor-thread-1) Event received from REST : {"id":"1","type":"hello-kafka-http-req","data":{"sim":"yes please","make":"id4"}}
+2023-06-07 15:24:36,423 WARN  [org.apa.kaf.cli.NetworkClient] (kafka-producer-network-thread | kafka-producer-quickstart-kafka-out) [Producer clientId=kafka-producer-quickstart-kafka-out] Error while fetching metadata with correlation id 4 : {quickstart-kafka-out=LEADER_NOT_AVAILABLE}
+2023-06-07 15:29:09,974 INFO  [com.red.clo.kaf.EventResource] (executor-thread-1) Event recieved from REST : {"id":"1","type":"hello-kafka-http-req","data":{"sim":"yes please","make":"id4"}}
+----
 #### `Kafka` -> `Incoming` 
 
 * Send message to Kafka `KafkaTopic` `quickstart-kafka-in`
-  ```shell script
-  docker|podman exec -it <CONTAINER_ID>podman exec -it 102f22e05cab ./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic quickstart-kafka-in
-  ```
++
+[source]
+----
+docker|podman exec -it <CONTAINER_ID>podman exec -it 102f22e05cab ./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic quickstart-kafka-in
+----
 
   * Result in logs
-    ```shell script
-    2023-06-07 15:23:14,812 INFO  [com.red.clo.kaf.EventResource] (vert.x-eventloop-thread-3) consumeQuickstartKafkaIn : Event received from Kafka
-    2023-06-07 15:23:14,813 INFO  [com.red.clo.kaf.EventResource] (vert.x-eventloop-thread-3) Payload : com.redhat.cloudnative.kafka.model.Event@4db60ee9
-    ```
++
+[source]
+----
+2023-06-07 15:23:14,812 INFO  [com.red.clo.kaf.EventResource] (vert.x-eventloop-thread-3) consumeQuickstartKafkaIn : Event received from Kafka
+2023-06-07 15:23:14,813 INFO  [com.red.clo.kaf.EventResource] (vert.x-eventloop-thread-3) Payload : com.redhat.cloudnative.kafka.model.Event@4db60ee9
+----
   
 * Get Metrics
   ```shell script
@@ -285,18 +314,20 @@ Notice the message acknowledgement in the finally block. Always acknowledge mess
 # Packaging and running the application
 
 The application can be packaged using:
-```shell script
+[source]
+----
 mvn package
-```
+----
 It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
 Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
 
 The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
 
 If you want to build an _über-jar_, execute the following command:
-```shell script
+[source]
+----
 mvn package -Dquarkus.package.type=uber-jar
-```
+----
 
 The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
 
@@ -305,14 +336,14 @@ The application, packaged as an _über-jar_, is now runnable using `java -jar ta
 
 Run the script
 
-```
+[source]
+----
 cd image-build
 
 ./image-build.sh [docker|podman]
 
 ./image-deploy-to-registry.sh [docker|podman] <REGISTRY_HOST> <IMAGE_REPO> <REGISTRY_USER> <AZUREREGISTRYNAME>
-
-```
+----
 
 running these commands will create a image in an azure container registry called :
 
@@ -320,8 +351,10 @@ running these commands will create a image in an azure container registry called
 
 This will build the image and store in a registry local to your laptop.
 
+[source]
+----
     <REGISTRY_HOST>/<IMAGE_REPO>/quickstart-kafka:latest
-
+----
 
 # Deploy the Image to OpenShift
 
@@ -329,9 +362,10 @@ This will build the image and store in a registry local to your laptop.
 
 Login at
 
-```
+[source]
+----
 https://console-openshift-console.apps.<DOMAIN>/
-```
+----
 
 ## Download the oc cli
 
@@ -342,10 +376,10 @@ Download the oc cli for your laptops architecure
 ## Openshift CLI Login
 First Login, get the login command from the webcosole. Click on your name in top right corner, click the "Copy Login Command", click "Display Tokem" link. Copy the login command, for instance :
 
-```
+[source]
+----
 oc login --server=https://api.<DOMAIN>:6443 -u <username> -p <password)
-
-```
+----
 
 ## Deploy the container image to OCP
 
@@ -362,7 +396,8 @@ This repo contains a folder called **chart**, this contains a Helm chart that de
 
 Here is the `values` file, contains the values that will be injected into this template (*UPDATE ACCORDINGLY*):
 
-```
+[source,YAML]
+----
 name: quickstart-kafka
 image:
   registry: <registryname>.azurecr.io     #Point to registry
@@ -381,28 +416,31 @@ config:
   ocp:
     cluster:
       domain: apps.<YOUR-DOMAIN>.com     #Point to K8s
-```
+----
 
 The template is usually used form within a CICD pipeline and executed by ArgoCD, but we can deploy it from the command line for convenience. The following command deploys from the command line, assuming that you are logged onto openshift and in your target project :
 
-```
+[source]
+----
 cd chart && helm template -f values.yaml . | oc apply -f -
-```
+----
 
 You should now see all of the components in this project deleplyed.
 
 If you want to delete them, just run :
 
-```
+[source]
+----
 cd chart && helm template -f values.yaml . | oc delete -f -
-```
+----
 
 ## Test the application 
 
-```
+[source]
+----
 cd rest-test
 test.sh`
-```
+----
 
 ## Metrics
 

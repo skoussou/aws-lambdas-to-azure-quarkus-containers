@@ -15,6 +15,10 @@ This project attempts to be the simplest possible project that provides a manual
 
 # Migrating a Message Triggered Based (Long Running) Lambda to Quarkus Application
 
+* Identify the main Lambda Function eg.
+```JAVA
+     public List<String> handleRequest(SQSEvent event, Context context)
+```
 * For a lambda which starts as the result of a _REST_ call and creates a message/event, place the lambda code in `EventResource.java#in` method adjusting appropriately the `@Path` configurations and HTTP Method (eg. `@POST`) to match the lambda's REST trigger.
 * For a lambda which starts as a result of a _message_, place the lambda code in `EventResource.java#consumeQuickstartKafkaIn` method adjusting the `@Incoming` configuration to the `Topic` name monitored by the lambda (adjust all occurrences as configs also in `values.yaml` and `application.properties`).
 
@@ -24,7 +28,7 @@ The source code is in the `/src` folder. The central class is `com.redhat.cloudn
 
 It's dependencies are defined in the pom.xml, of note is the dependency for Kafka
 
-```
+```XML
     <dependency>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
@@ -35,7 +39,7 @@ It's dependencies are defined in the pom.xml, of note is the dependency for Kafk
 
 An example of a method that exposes an HTTP REST endpoint and forwards the payload it receives together with a header to a Kafka Topic :
 
-```
+```JAVA
     @Inject
     @Channel("quickstart-kafka-out")
     Emitter<Event> quickstartKafkaOut;
@@ -72,7 +76,7 @@ The Channel Emitter is responsible for sending the message to Kafka. More Docume
 
 Below is a code example that subscribes to an incoming message channel and processes the incoming message in the method below :
 
-```
+```JAVA
     @Incoming("quickstart-kafka-in")
     public CompletionStage<Void> consumeQuickstartKafkaIn(Message<Event> msg) {
 
@@ -103,7 +107,7 @@ Below is a code example that subscribes to an incoming message channel and proce
 
 Below is an example of a Custom Resource (`CR`) that creates a Kafka cluster.
 
-```
+```YAML
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
@@ -159,7 +163,7 @@ This Kafka cluster has three brokers, persistent storage. Additionally an endpoi
 
 Below is the Custom Resource (`CR`) to create a user for mtls authentication :
 
-```
+```YAML
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:
@@ -177,7 +181,7 @@ Note the reference to the cluster via a label defined above.
 
 Below is the Custom Resource (`CR`) that defines a Kafka Topic, not tics that it defines the time a message is allowed to stay on the topic, and the total size in bytes of all messages in the topic, when one of these thresholds is reached old messages are evicted.
 
-```
+```YAML
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
@@ -238,7 +242,7 @@ If you want to learn more about Quarkus, please visit its website: https://quark
   curl -v -d "@rest-test/event.json"  -H "Content-Type: application/json" -X POST http://localhost:8080/event/in
   ```
   * Result in logs
-  ```shell script
+  ```YAML
   2023-06-07 15:24:36,385 INFO  [com.red.clo.kaf.EventResource] (executor-thread-1) Event received from REST : {"id":"1","type":"hello-kafka-http-req","data":{"sim":"yes please","make":"id4"}}
   2023-06-07 15:24:36,423 WARN  [org.apa.kaf.cli.NetworkClient] (kafka-producer-network-thread | kafka-producer-quickstart-kafka-out) [Producer clientId=kafka-producer-quickstart-kafka-out] Error while fetching metadata with correlation id 4 : {quickstart-kafka-out=LEADER_NOT_AVAILABLE}
   2023-06-07 15:29:09,974 INFO  [com.red.clo.kaf.EventResource] (executor-thread-1) Event recieved from REST : {"id":"1","type":"hello-kafka-http-req","data":{"sim":"yes please","make":"id4"}}
@@ -342,7 +346,6 @@ First Login, get the login command from the webcosole. Click on your name in top
 
 ```
 oc login --server=https://api.<DOMAIN>:6443 -u <username> -p <password)
-
 ```
 
 ## Deploy the container image to OCP
@@ -360,7 +363,7 @@ This repo contains a folder called **chart**, this contains a Helm chart that de
 
 Here is the `values` file, contains the values that will be injected into this template (*UPDATE ACCORDINGLY*):
 
-```
+```YAML
 name: quickstart-kafka
 image:
   registry: <registryname>.azurecr.io     #Point to registry
