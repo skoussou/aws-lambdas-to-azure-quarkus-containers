@@ -15,7 +15,7 @@ This project attempts to be the simplest possible project that provides a manual
 
 # Migrating a Message Triggered Based (Long Running) Lambda to Quarkus Application
 
-* Identify the main Lambda Function eg.
+* Identify the main Lambda Function and start code migration from it eg.
 ```JAVA
      public List<String> handleRequest(SQSEvent event, Context context)
 ```
