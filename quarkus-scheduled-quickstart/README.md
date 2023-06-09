@@ -42,11 +42,11 @@ This project attempts to be the simplest possible project that provides a manual
         public void handleRequest() { .. }
   ```
 
-* For a lambda which starts as the result of a scheduled event place the lambda code in [PollOrchestrator.java](src/main/java/com/redhat/cloudnative/simmanagement/datahandler/pollers/function/PollOrchestrator.java)
+* For a lambda which starts as the result of a scheduled event place the lambda code in [PollOrchestrator.java#dmdScheduler](src/main/java/com/redhat/cloudnative/simmanagement/datahandler/pollers/function/PollOrchestrator.java) adjusting accordingly the `@Scheduled()` intervals
   ```JAVA
-      @ApplicationScoped
-      public class PollOrchestrator {
-  
+  @ApplicationScoped
+  public class PollOrchestrator {
+
     // FIXME - Call the Lambda handle method
     @Inject
     LambdaFunction dmdPoller;
@@ -71,6 +71,7 @@ This project attempts to be the simplest possible project that provides a manual
         logger.error("Unknown exception for DMD Scheduler: {}", e.getMessage(), e);
       }
     }
+  }
   ```
 * CosmosDB Connection and Use
   * For Connection see [CosmosConnection.java](src/main/java/com/redhat/cloudnative/simmanagement/datahandler/pollers/repository/CosmosConnection.java)
