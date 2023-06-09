@@ -13,7 +13,7 @@ This project attempts to be the simplest possible project that provides a manual
 
 **During the lambda migration, all of the manual steps in this workflow will be replaced by automated CICD piplines**
 
-# Migrating a Message Triggered Based (Long Running) Lambda to Quarkus Application
+# Migrating a Message Triggered (Long Running) Lambda to Quarkus Application
 
 ## Define Configurations
 
