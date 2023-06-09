@@ -42,7 +42,7 @@ This project attempts to be the simplest possible project that provides a manual
         public void handleRequest() { .. }
   ```
 
-* To Quarkus Application [PollOrchestrator.java](src/main/java/com/redhat/cloudnative/simmanagement/datahandler/pollers/function/PollOrchestrator.java)
+* For a lambda which starts as the result of a scheduled event place the lambda code in [PollOrchestrator.java](src/main/java/com/redhat/cloudnative/simmanagement/datahandler/pollers/function/PollOrchestrator.java)
   ```JAVA
       @ApplicationScoped
       public class PollOrchestrator {
