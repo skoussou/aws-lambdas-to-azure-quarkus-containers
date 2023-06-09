@@ -98,8 +98,8 @@ graph TB
   click Node1b "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/container-guidelines.md#a2---application-metrics" "Setup Application Metrics"
   click Node1c "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/migrate-business-application-code-in-quarkus.md#option-a---migrating-code-of-cronjob-type-service-from-lambda-to-quarkus-application-main" "Start Migrating a CronJob"
   click Node1d "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/migrate-business-application-code-in-quarkus.md#option-b---migrating-code-of-rest-long-running-type-service-from-lambda-to-quarkus-applicationscoped-application" "Start Migrating a Rest Service"
-  click Node1e "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/migrate-business-application-code-in-quarkus.md#option-c---migrating-code-of-scheduled-type-long-running-service-from-lambda-to-quarkus-scheduled-application" "Start Migrating a Scheduled Service"
-  click Node1f "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/-/blob/main/quarkus-kafka-quickstart/README.md#migrating-a-message-triggered-based-long-running-lambda-to-quarkus-application" "Start Migrating a Message Triggered Service"
+  click Node1e "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/-/tree/main/quickstart-lambda-to-quarkus-scheduled#migrating-a-scheduled-based-repeatable-running-lambda-to-quarkus-application" "Start Migrating a Scheduled Service"
+  click Node1f "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/quickstart-lambda-to-quarkus-kafka/README.md#migrating-a-message-triggered-long-running-lambda-to-quarkus-application" "Start Migrating a Message Triggered Service"
   end
 
   subgraph "Migrating an AWS Lambda Service to Quarkus Container Service"
