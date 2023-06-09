@@ -262,10 +262,10 @@ If you want to learn more about Quarkus, please visit its website: https://quark
   cd image-build 
   start-local-cosmosdb.sh docker|podman
   ```
-  * Retrieve the cosmodb Primary Key by going to https://localhost:8081/_explorer/index.html and configure `%dev.cosmos.master.key` in [`src/main/resources/application.properties`](src/main/resources/application.properties) 
+  * Retrieve the cosmodb Primary Key by going to https://localhost:8081/_explorer/index.html and configure with its value `%dev.cosmos.master.key` in [`src/main/resources/application.properties`](src/main/resources/application.properties) 
   ![cosmodb details](./images/cosmodb-emulator-details.png) 
 
-  * Configure local application `cacerts` to include the certs for the cosmodb
+  * Configure local application `cacerts` to include the certs for the cosmodb so the Java application can use them when connecting to cosmodb
   ```shell script
   cd image-build 
   ./cosmodb-cert-in-cacerts.sh
