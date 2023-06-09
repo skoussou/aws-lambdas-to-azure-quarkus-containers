@@ -266,10 +266,10 @@ If you want to learn more about Quarkus, please visit its website: https://quark
   ![cosmodb details](./images/cosmodb-emulator-details.png) 
 
   * Configure local application `cacerts` to include the certs for the cosmodb so the Java application can use them when connecting to cosmodb
-  ```shell script
-  cd image-build 
-  ./cosmodb-cert-in-cacerts.sh
-  ```
+    ```shell script
+    cd image-build 
+    ./cosmodb-cert-in-cacerts.sh
+    ```
 
 * You can now run your application in dev mode that enables live coding using:
   ```shell script
