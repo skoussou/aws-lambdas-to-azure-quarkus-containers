@@ -18,10 +18,8 @@ public class LambdaFunction extends MasterDataPoller {
 
   private static final Logger logger = LoggerFactory.getLogger(LambdaFunction.class);
 
-
   @Inject
   LastFetchedEventRepository lastFetchedEvetRepository;
-  
 
   public int handleEvent(String simId) {
 
