@@ -19,7 +19,7 @@ This project attempts to be the simplest possible project that provides a manual
 
 * Add configurations for local development and testing in [`src/main/resources/application.properties`](src/main/resources/application.properties)
 * Add configurations for deployment to Openshift in [`helm chart values`](chart/values.yaml) and [`helm chart template resources`](chart)
-* Quarkus application dependencies are defined in the [pom.xml](pom.xml). Note is the dependencies for scheduler service, Kafka and Cosmoddb integrations
+* Quarkus application dependencies are defined in the [pom.xml](pom.xml). Note the dependency for Kafka integrations
   ```XML
     <dependency>
       <groupId>io.quarkus</groupId>
