@@ -4,7 +4,7 @@ metadata:
   name: master-data-service-entry
 spec:
   hosts:
-    - <your hostname>
+    - api.your-external-service-domain.com
   ports:
     - name: https
       number: 443

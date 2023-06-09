@@ -57,6 +57,17 @@ spec:
               cpu: '200m'
               memory: 512Mi
           name: quarkus
+          env:
+            - name: kafka.ssl.truststore.password
+              valueFrom:
+                secretKeyRef:
+                  key: ca.password
+                  name: {{ .Values.config.kafka.cluster.name }}-cluster-ca-cert
+            - name: kafka.ssl.keystore.password
+              valueFrom:
+                secretKeyRef:
+                  key: user.password
+                  name: {{ .Values.config.kafka.user }}
           ports:
             - name: http
               containerPort: 8080
@@ -70,12 +81,12 @@ spec:
           imagePullPolicy: Always
           image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.version }}
           volumeMounts:
-          - name: {{ .Values.name }}-application-properties
-            mountPath: /deployments/config
-          - name: sim-reg-user-keystore
-            mountPath: /deployments/keystore            
-          - name: wc-test-kafka-cluster-truststore
-            mountPath: /deployments/truststore
+            - name: {{ .Values.name }}-application-properties
+              mountPath: /deployments/config
+            - name: {{ .Values.config.kafka.user }}
+              mountPath: /deployments/keystore
+            - name: {{ .Values.config.kafka.cluster.name }}-cluster-ca-cert
+              mountPath: /deployments/truststore
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
@@ -85,12 +96,12 @@ spec:
         - name: {{ .Values.name }}-application-properties
           configMap:
             name: {{ .Values.name }}-application-properties
-        - name: sim-reg-user-keystore
+        - name: {{ .Values.config.kafka.user }}
           secret:
-            secretName: sim-reg-user-keystore
-        - name: wc-test-kafka-cluster-truststore
+            secretName: {{ .Values.config.kafka.user }}
+        - name: {{ .Values.config.kafka.cluster.name }}-cluster-ca-cert
           secret:
-            secretName: wc-test-kafka-cluster-truststore                                    
+            secretName: {{ .Values.config.kafka.cluster.name }}-cluster-ca-cert
   strategy:
     type: RollingUpdate
     rollingUpdate:

@@ -359,5 +359,81 @@ First Login, get the login command from the webcosole. Click on your name in top
 
 ```
 oc login --token=<YOUR TOKEN> --server=https://api.arcaroytxry.westus2.aroapp.io:6443
+```
 
+## Deploy the container image to OCP
+
+This repo contains a folder called **chart**, this contains a [Helm chart](chart) that deploys this application. The following files are templates :
+
+* `configmap.yaml` : defines the application.properties that configures our quarkus application
+* `deployment.yaml` : defines the details of how are image is deployed
+* `istio-serviceentry.yaml` : If you deploy the quickstart inside Openshift Service Mesh and it needs to contact any service running outside of it then this is required to "egress" from the mesh  (**modify me**)
+* `kafka-topic.yaml` : defines the kafka topic to write to 
+* `roleBinding.yaml` : Role bindings for the ServiceAccount used in this service to read the secrets to use to download from the registry
+* `service.yml` : defines a loadbalancer to distribute traffic accross multiple podscontaing our app
+* `serviceAccount.yaml` : defines a service account for our deployment which is allowed to view secrets.
+
+Below is the [`values.yaml`](chart/values.yaml) file, it contains the values that will be injected into this template (**_UPDATE ACCORDINGLY_**):
+
+```YAML
+name: quickstart-scheduled
+service_mesh_enabled: true
+schedule: '"0 0 * * *"'
+env: test
+image:
+name: quickstart-scheduled
+service_mesh_enabled: true
+schedule: '"0 0 * * *"'
+env: test
+image:
+  registry: <registryname>.azurecr.io #Point to your registry
+  repository: quickstart-scheduled    #Point to your repository
+  name: quickstart-scheduled          #Point to your image name
+  version: latest                     #Define your version
+
+config:
+  loglevel: INFO
+  cosmos:
+    host: <cosmosdb your host>        #eg. https://sim-management.documents.azure.com:443/
+    database: <your-database-name>    #eg. sim-management 
+    container: <your-container-name>  #eg. masterdata-poller-LastChangeIds 
+    partitionkey: <db key>            #eg. id  
+  kafka:
+    cluster:
+      name: wc-test-kafka-cluster
+    user: quickstart-kafka-user
+    outtopic: sim-state-manager
+```
+
+he template is usually used from within a CICD pipeline and executed by ArgoCD, but we can deploy it from the command line for convenience. The following command deploys from the command line, assuming that you are logged onto openshift and in your target project :
+
+```
+cd chart && helm template -f values.yaml . | oc apply -f -
+```
+
+You should now see all of the components in this project deleplyed.
+
+If you want to delete them, just run :
+
+```shell script
+cd chart && helm template -f values.yaml . | oc delete -f -
+```
+
+## Test the application
+
+```shell script
+cd rest-test
+test.sh
+```
+
+* Check container POD logs
+
+```shell script
+oc logs -f quarkus-scheduled-<POD ID> 
+```
+
+* Check AMQ Streams Kafka POD for the messages received
+
+```shell script
+oc -n kafkas run kafka-consumer -ti --image=registry.redhat.io/amq7/amq-streams-kafka-33-rhel8:2.3.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server  wc-test-kafka-cluster-kafka-bootstrap.lambdas-tests.svc.cluster.local:9092 --topic sim-state-manager --from-beginning
 ```

@@ -7,16 +7,18 @@ image:
   repository: quickstart-scheduled    #Point to your repository
   name: quickstart-scheduled          #Point to your image name
   version: latest                     #Define your version
-
 config:
   loglevel: INFO
   cosmos:
-    host: <eg. https://sim-management.documents.azure.com:443/ your host>
-    database: <eg. sim-management your-database-name>
-    container: <eg. masterdata-poller-LastChangeIds your-container-name>
-    partitionkey: id
+    host: <cosmosdb your host>        #eg. https://sim-management.documents.azure.com:443/
+    database: <your-database-name>    #eg. sim-management
+    container: <your-container-name>  #eg. masterdata-poller-LastChangeIds
+    partitionkey: <db key>            #eg. id
   kafka:
     cluster:
       name: wc-test-kafka-cluster
     user: quickstart-kafka-user
     outtopic: sim-state-manager
+  ocp:
+    cluster:
+      domain: svc.cluster.local       #OCP Domain

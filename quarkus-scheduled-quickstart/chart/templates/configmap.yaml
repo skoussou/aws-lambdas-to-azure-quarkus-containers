@@ -10,12 +10,11 @@ data:
 
     kafka.bootstrap.servers={{ .Values.config.kafka.cluster.name }}-kafka-bootstrap.lambdas-tests.{{ .Values.config.ocp.cluster.domain }}:9093
     kafka.security.protocol=SSL
-    kafka.ssl.truststore.location=truststore/wc-test-kafka-cluster-truststore.jks
-    kafka.ssl.truststore.password=<your-truststore-password>
-    kafka.ssl.truststore.type=JKS
-    kafka.ssl.keystore.location=keystore/sim-reg-user-keystore.jks
-    kafka.ssl.keystore.password=<your-keystore-password>
-    kafka.ssl.keystore.type=JKS
+    kafka.ssl.truststore.location=truststore/ca.p12
+    kafka.ssl.truststore.type=PKCS12
+    kafka.ssl.keystore.location=keystore/user.p12
+    kafka.ssl.keystore.type=PKCS12
+
 
     cosmos.host={{ .Values.config.cosmos.outtopic }}
     cosmos.database={{ .Values.config.cosmos.database }}
