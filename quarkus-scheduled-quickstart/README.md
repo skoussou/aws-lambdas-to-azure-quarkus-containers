@@ -1,4 +1,4 @@
-# quarkus-scheduled-quickstart
+# Quarkus Scheduled Quickstart
 
 This quickstart is a good place to start if you are migrating lambda functions that are running at scheduled intervals. It demonstrates, connecting and authenticating with Kafka, publishing and subscribing to messages.
 
@@ -18,7 +18,7 @@ This project attempts to be the simplest possible project that provides a manual
 ## Define Configurations
 * Add configurations for local development and testing in [`src/main/resources/application.properties`](src/main/resources/application.properties) 
 * Add configurations for deployment to Openshift in [`helm chart values`](chart/values.yaml) and [`helm chart template resources`](chart)
-* Quarkus application dependencies are defined in the [pom.xml](pom.xml). Note is the dependencies for scheduler service, Kafka and Cosmoddb integrations
+* Quarkus application dependencies are defined in the [pom.xml](pom.xml). Note these are the dependencies for scheduler service, Kafka and Cosmoddb integrations
   ```XML
     <dependency>
       <groupId>io.quarkus</groupId>
