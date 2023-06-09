@@ -263,7 +263,7 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 
 * Send message to Kafka `KafkaTopic` `quickstart-kafka-in`
   ```shell script
-  docker|podman exec -it <CONTAINER_ID>podman exec -it 102f22e05cab ./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic quickstart-kafka-in
+  docker|podman exec -it <CONTAINER_ID> ./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic quickstart-kafka-in
   ```
 
   * Result in logs
