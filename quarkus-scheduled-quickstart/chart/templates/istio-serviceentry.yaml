@@ -1,0 +1,13 @@
+kind: ServiceEntry
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: master-data-service-entry
+spec:
+  hosts:
+    - <your hostname>
+  ports:
+    - name: https
+      number: 443
+      protocol: HTTPS
+  location: MESH_EXTERNAL
+  resolution: DNS

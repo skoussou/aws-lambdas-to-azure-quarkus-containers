@@ -1,0 +1,100 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    app: {{ .Values.name }}
+    tags.datadoghq.com/service: {{ .Values.name }}
+    tags.datadoghq.com/env: {{ .Values.env }}
+    tags.datadoghq.com/version: {{ .Values.image.version }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      name: {{ .Values.name }}
+      labels:
+        app: {{ .Values.name }}
+        tags.datadoghq.com/service: {{ .Values.name }}
+        tags.datadoghq.com/env: {{ .Values.env }}
+        tags.datadoghq.com/version: {{ .Values.image.version }}
+      annotations:
+        prometheus.io/path: /q/metrics
+        prometheus.io/port: '8080'
+        prometheus.io/scrape: 'true'
+        sidecar.istio.io/inject: '{{ .Values.service_mesh_enabled }}'
+        ad.datadoghq.com/quarkus.checks: |
+          {
+            "openmetrics": {
+              "instances": [
+                  {
+                    "openmetrics_endpoint": "http://%%host%%:15020/stats/prometheus",
+                    "namespace": "sim.data",
+                    "metrics": [ "poll_triggered" ]
+                  }
+              ]
+            },
+            "envoy": {
+              "instances": [
+                  {
+                    "openmetrics_endpoint": "http://%%host%%:15090/stats/prometheus"
+                  }
+              ]
+            }
+          }
+        ad.datadoghq.com/quarkus.logs: '[{"source":"openshift","cluster":"cluster","service":"{{ .Values.name }}"}]'
+    spec:
+      serviceAccountName: {{ .Values.name }}
+      containers:
+        - resources:
+            limits:
+              cpu: '400m'
+              memory: 1Gi
+            requests:
+              cpu: '200m'
+              memory: 512Mi
+          name: quarkus
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: prometheus
+              containerPort: 9779
+              protocol: TCP
+            - name: jolokia
+              containerPort: 8778
+              protocol: TCP
+          imagePullPolicy: Always
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.version }}
+          volumeMounts:
+          - name: {{ .Values.name }}-application-properties
+            mountPath: /deployments/config
+          - name: sim-reg-user-keystore
+            mountPath: /deployments/keystore            
+          - name: wc-test-kafka-cluster-truststore
+            mountPath: /deployments/truststore
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+      volumes:
+        - name: {{ .Values.name }}-application-properties
+          configMap:
+            name: {{ .Values.name }}-application-properties
+        - name: sim-reg-user-keystore
+          secret:
+            secretName: sim-reg-user-keystore
+        - name: wc-test-kafka-cluster-truststore
+          secret:
+            secretName: wc-test-kafka-cluster-truststore                                    
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 2
+  progressDeadlineSeconds: 600

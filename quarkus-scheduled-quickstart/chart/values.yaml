@@ -1,0 +1,22 @@
+name: quickstart-scheduled
+service_mesh_enabled: true
+schedule: '"0 0 * * *"'
+env: test
+image:
+  registry: <registryname>.azurecr.io #Point to your registry
+  repository: quickstart-scheduled    #Point to your repository
+  name: quickstart-scheduled          #Point to your image name
+  version: latest                     #Define your version
+
+config:
+  loglevel: INFO
+  cosmos:
+    host: <eg. https://sim-management.documents.azure.com:443/ your host>
+    database: <eg. sim-management your-database-name>
+    container: <eg. masterdata-poller-LastChangeIds your-container-name>
+    partitionkey: id
+  kafka:
+    cluster:
+      name: wc-test-kafka-cluster
+    user: quickstart-kafka-user
+    outtopic: sim-state-manager

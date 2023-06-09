@@ -1,0 +1,33 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.name }}-application-properties
+data:
+  application.properties: |-
+    quarkus.log.level={{ .Values.config.loglevel }}
+    quarkus.log.console.json=false
+
+    kafka.bootstrap.servers={{ .Values.config.kafka.cluster.name }}-kafka-bootstrap.lambdas-tests.{{ .Values.config.ocp.cluster.domain }}:9093
+    kafka.security.protocol=SSL
+    kafka.ssl.truststore.location=truststore/wc-test-kafka-cluster-truststore.jks
+    kafka.ssl.truststore.password=<your-truststore-password>
+    kafka.ssl.truststore.type=JKS
+    kafka.ssl.keystore.location=keystore/sim-reg-user-keystore.jks
+    kafka.ssl.keystore.password=<your-keystore-password>
+    kafka.ssl.keystore.type=JKS
+
+    cosmos.host={{ .Values.config.cosmos.outtopic }}
+    cosmos.database={{ .Values.config.cosmos.database }}
+    cosmos.container={{ .Values.config.cosmos.container }}
+    cosmos.partitionkey={{ .Values.config.cosmos.partitionkey }}
+
+    mp.messaging.outgoing.{{ .Values.config.kafka.outtopic }}.connector=smallrye-kafka
+    mp.messaging.outgoing.{{ .Values.config.kafka.outtopic }}.topic={{ .Values.config.kafka.outtopic }}
+    mp.messaging.outgoing.{{ .Values.config.kafka.outtopic }}.value.serializer=io.quarkus.kafka.client.serialization.ObjectMapperSerializer
+    mp.messaging.outgoing.{{ .Values.config.kafka.outtopic }}.merge=true
+    mp.messaging.outgoing.{{ .Values.config.kafka.outtopic }}.broadcast=true
+
+    # Kubernetes Secret
+    %prod.quarkus.kubernetes-config.secrets.enabled=true
+    %prod.quarkus.kubernetes-config.secrets=sim-vehicle-view-cosmos-master-key,sim-changeid-cosmos-master-key
