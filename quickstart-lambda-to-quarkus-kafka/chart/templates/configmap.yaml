@@ -1,0 +1,23 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.name }}-application-properties
+data:
+  application.properties: |- 
+    kafka.bootstrap.servers={{ .Values.config.kafka.cluster.name }}-kafka-bootstrap.lambdas-tests.{{ .Values.config.ocp.cluster.domain }}:9093
+    kafka.security.protocol=SSL
+    kafka.ssl.truststore.location=truststore/ca.p12
+    kafka.ssl.truststore.type=PKCS12
+    kafka.ssl.keystore.location=keystore/user.p12
+    kafka.ssl.keystore.type=PKCS12
+
+    mp.messaging.incoming.{{ .Values.config.kafka.intopic }}.connector=smallrye-kafka
+    mp.messaging.incoming.{{ .Values.config.kafka.intopic }}.topic={{ .Values.config.kafka.intopic }}
+    mp.messaging.incoming.{{ .Values.config.kafka.intopic }}.value.deserializer= com.redhat.cloudnative.kafka.model.deserialisers.EventDeserialiser
+    mp.messaging.incoming.{{ .Values.config.kafka.intopic }}.merge=true
+
+    mp.messaging.outgoing.{{ .Values.config.kafka.outtopic }}.connector=smallrye-kafka
+    mp.messaging.outgoing.{{ .Values.config.kafka.outtopic }}.topic={{ .Values.config.kafka.outtopic }}
+    mp.messaging.outgoing.{{ .Values.config.kafka.outtopic }}.value.serializer=io.quarkus.kafka.client.serialization.ObjectMapperSerializer
+    mp.messaging.outgoing.{{ .Values.config.kafka.outtopic }}.merge=true

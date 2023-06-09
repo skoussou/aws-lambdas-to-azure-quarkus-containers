@@ -1,0 +1,21 @@
+name: quickstart-kafka
+image:
+  registry: quay.io #Point to registry
+  repository: skoussou
+  name: quickstart-kafka
+  version: latest
+
+config:
+  loglevel: INFO       
+  kafka:
+    cluster: 
+      name: wc-test-kafka-cluster
+    user: quickstart-kafka-user
+    intopic: quickstart-kafka-in
+    outtopic: quickstart-kafka-out
+  ocp:
+    cluster:
+      domain: svc.cluster.local
+      
+
+  
