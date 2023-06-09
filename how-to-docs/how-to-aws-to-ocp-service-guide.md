@@ -107,7 +107,7 @@ graph TB
   Node2[Choose a quickstart/skeleton quarkus service] --> Node3[Containerize the application]
   Node3[Containerize the application] -- Path: prepare for deployment --> Node2b[Create Helm Chart]
   Node3[Containerize the application] -- Path: prepare business code --> Node1a[Setup Application Configurations]
-  click Node2 "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/residency-quickstarts.md#list-of-quickstarts-for-the-migration-of-lambdas-to-quarkus" "Choose Quickstart"
+  click Node2 "https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/lambda-to-quarkus-quickstarts.md#list-of-quickstarts-for-the-migration-of-lambdas-to-quarkus" "Choose Quickstart"
 
 end
 ```

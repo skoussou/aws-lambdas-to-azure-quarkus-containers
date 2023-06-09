@@ -4,7 +4,7 @@ This document describes the helm chart creation and resources to be configured b
 
 ## Assumptions
 
-You have selected one of the proposed [residency quickstarts](residency-quickstarts.md) which contains an example of **chart** folder
+You have selected one of the proposed [residency quickstarts](lambda-to-quarkus-quickstarts.md) which contains an example of **chart** folder
 
 ## Create Helm Chart
 

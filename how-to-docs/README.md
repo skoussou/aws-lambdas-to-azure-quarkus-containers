@@ -15,7 +15,7 @@ A list of How-Tos to help speed up development delivery
    * [How To - Storing Secrets Securely in Git](secret-solution.md)
    * [How to - Use Podman](podman.md)
    * [How to - Build and Run Local Containers for Testing](local-container-building-fort-testing.md)
-   * [How to - Start a new service repository based on a quickstart](residency-quickstarts.md)   
+   * [How to - Start a new service repository based on a quickstart](lambda-to-quarkus-quickstarts.md)   
    * [How To - Create Helm charts for OCP Resources to deploy the application](helm-chart-for-app-ocp-deployment.md)   
    * ServiceMesh
      * [How To - Configure ServiceMesh to Route Traffic to your Service](servicemesh-routing-into.md)  
