@@ -303,11 +303,11 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 
   > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
-## [TO TEST HERE ONWARDS] Packaging and running the application
+## Packaging and running the application
 
 The application can be packaged using:
 ```shell script
-./mvnw package
+mvn package
 ```
 It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
 Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
@@ -316,28 +316,27 @@ The application is now runnable using `java -jar target/quarkus-app/quarkus-run.
 
 If you want to build an _über-jar_, execute the following command:
 ```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
+mvn package -Dquarkus.package.type=uber-jar
 ```
 
 The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
 
-### Building & Testing the Container
+## Build Container Image & Deploy in Image Registry
 
-Use the scripts in `image-build` and [Guidelines for building application and any external dependency containers for local functional tests](https://github.com/cariad-cloud/residency-docs/blob/developer-delivery-cookbook/how-to-docs/local-container-building-fort-testing.md) to test it localLy.
-
-you should see some activity in the log, you can go to the Cosmos DB Data Explorer to see your data.
-
-## Push the image to the a Container registry
+Run the script
 
 ```
-image-build/image-deploy-to-registry.sh podman|docker
+cd image-build
+
+./image-build.sh [docker|podman]
+
+./image-deploy-to-registry.sh [docker|podman] <REGISTRY_HOST> <IMAGE_REPO> <REGISTRY_USER> <AZUREREGISTRYNAME>
 ```
 
-This script will push the container image to :
+Running these commands will create a image in an azure container registry called : `<REGISTRY_HOST>/<IMAGE_REPO>/quickstart-scheduled:latest`
 
-```
-residencyregistry.azurecr.io/quickstart-scheduled/quickstart-scheduled
-```
+This will also build the image and store in a registry local to your laptop.
+
 
 # Deploy the Image to OpenShift
 

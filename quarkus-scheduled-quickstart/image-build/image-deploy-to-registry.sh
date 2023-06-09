@@ -18,9 +18,11 @@ AZUREREGISTRYNAME=$5
 REGISTRY_PASS=$6
 TOKEN=""
 
+TOKEN=$(az acr login --name $AZUREREGISTRYNAME --expose-token | jq -r .accessToken)
+echo
+echo TOKEN : $TOKEN
+sleep 4
 if [[ "$TOKEN" != "" ]]; then
-  TOKEN=$(az acr login --name $AZUREREGISTRYNAME --expose-token | jq -r .accessToken)
-  echo TOKEN : $TOKEN
   # az acr login --name <AZUREREGISTRYNAME>
   $BUILD_TOOL login ${REGISTRY_HOST} -u ${USER} -p $TOKEN
 else
