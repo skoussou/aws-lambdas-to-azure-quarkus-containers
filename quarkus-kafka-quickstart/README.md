@@ -1,6 +1,6 @@
 # Quarkus Kafka Quick start
 
-This quickstart is a good place to start if you are migrating an event or message driven lambda application. I it demonstrates, connecting and authenticating with Kafka, publishing and subscribing to messages.
+This quickstart is a good place to start if you are migrating an event or message driven lambda application. It demonstrates, connecting and authenticating with Kafka, publishing and subscribing to messages.
 
 This project attempts to be the simplest possible project that provides a manual workflow for deploying an application with the following features:
 
