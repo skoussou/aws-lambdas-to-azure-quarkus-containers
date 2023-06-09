@@ -364,7 +364,7 @@ This repo contains a folder called **chart**, this contains a [Helm chart](chart
    * `service.yml` : defines a loadbalancer to distribute traffic accross multiple podscontaing our app
    * `serviceAccount.yaml` : defines a service account for our deployment which is allowd to view secrets.
 
-Here is the `values` file, contains the values that will be injected into this template (*UPDATE ACCORDINGLY*):
+Here is the `values` file, contains the values that will be injected into this template (**_UPDATE ACCORDINGLY_**):
 
 ```YAML
 name: quickstart-kafka
