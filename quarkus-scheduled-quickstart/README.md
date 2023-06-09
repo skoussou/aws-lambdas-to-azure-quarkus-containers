@@ -197,7 +197,7 @@ spec:
       type: persistent-claim
 ```
 
-Secrets necessary to connect to this cluster without mtls will be created in the same namespace.
+Secrets necessary to connect to this cluster with mtls will be created in the same namespace.
 
 This Kafka cluster has three brokers, persistent storage. Additionally an endpoint where users can connect and establish identity cryptographically with mutual tls. Secrets for this user will be automatically created.
 
