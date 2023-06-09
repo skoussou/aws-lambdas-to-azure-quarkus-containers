@@ -258,7 +258,7 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 
 * Run locally cosmodb
   ```shell script
-  cd local-image-build-test 
+  cd image-build 
   start-local-cosmosdb.sh docker|podman
   ```
   * Retrieve the cosmodb Primary Key by going to https://localhost:8081/_explorer/index.html and configure `%dev.cosmos.master.key` in [`src/main/resources/application.properties`](src/main/resources/application.properties) 
@@ -266,7 +266,7 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 
   * Configure local application `cacerts` to include the certs for the cosmodb
   ```shell script
-  cd local-image-build-test 
+  cd image-build 
   ./cosmodb-cert-in-cacerts.sh
   ```
 
@@ -322,14 +322,14 @@ The application, packaged as an _über-jar_, is now runnable using `java -jar ta
 
 ### Building & Testing the Container
 
-Use the scripts in `local-image-build-test` and [Guidelines for building application and any external dependency containers for local functional tests](https://github.com/cariad-cloud/residency-docs/blob/developer-delivery-cookbook/how-to-docs/local-container-building-fort-testing.md) to test it localLy.
+Use the scripts in `image-build` and [Guidelines for building application and any external dependency containers for local functional tests](https://github.com/cariad-cloud/residency-docs/blob/developer-delivery-cookbook/how-to-docs/local-container-building-fort-testing.md) to test it localLy.
 
 you should see some activity in the log, you can go to the Cosmos DB Data Explorer to see your data.
 
 ## Push the image to the a Container registry
 
 ```
-local-image-build-test/image-deploy-to-registry.sh podman|docker
+image-build/image-deploy-to-registry.sh podman|docker
 ```
 
 This script will push the container image to :
