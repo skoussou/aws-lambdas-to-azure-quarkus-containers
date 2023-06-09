@@ -384,10 +384,10 @@ config:
     outtopic: quickstart-kafka-out
   ocp:
     cluster:
-      domain: apps.<YOUR-DOMAIN>.com     #Point to K8s
+      domain: apps.<YOUR-DOMAIN>     #Point to K8s
 ```
 
-The template is usually used form within a CICD pipeline and executed by ArgoCD, but we can deploy it from the command line for convenience. The following command deploys from the command line, assuming that you are logged onto openshift and in your target project :
+The template is usually used from within a CICD pipeline and executed by ArgoCD, but we can deploy it from the command line for convenience. The following command deploys from the command line, assuming that you are logged onto openshift and in your target project :
 
 ```
 cd chart && helm template -f values.yaml . | oc apply -f -
@@ -397,20 +397,34 @@ You should now see all of the components in this project deleplyed.
 
 If you want to delete them, just run :
 
-```
+```shell script
 cd chart && helm template -f values.yaml . | oc delete -f -
 ```
 
 ## Test the application 
 
-```
+```shell script
 cd rest-test
-test.sh`
+test.sh
 ```
+
+* Check container POD logs
+
+```shell script
+oc logs -f quarkus-kafka-<PODID> 
+```
+
+* Check AMQ Streams Kafka POD for the messages received
+
+
+```shell script
+oc -n kafkas run kafka-consumer -ti --image=registry.redhat.io/amq7/amq-streams-kafka-33-rhel8:2.3.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server  wc-test-kafka-cluster-kafka-bootstrap.lambdas-tests.svc.cluster.local:9092 --topic my-topic --from-beginning
+```
+
 
 ## Metrics
 
-Metrics in a format useful to Prometheus are available at a specific end point : **/q/metrics**
+Metrics in a format useful to Prometheus are available at a specific end point : `/q/metrics`
 
 The numbers of different kafka topic are measured, this is because a custom metric has been included in the code
 
