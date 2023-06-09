@@ -1,8 +1,0 @@
-{
-    "id": "1",
-    "type": "hello-kafka-http-req",
-    "data": {
-        "make": "id4",
-        "sim": "yes please"
-    }
-}

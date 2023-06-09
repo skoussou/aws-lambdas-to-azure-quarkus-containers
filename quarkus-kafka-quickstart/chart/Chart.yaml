@@ -1,7 +1,0 @@
-apiVersion: v2 #helm v3
-description: A Helm chart for the Quarkus Kafka Quickstart
-name: quarkus-kafka-quickstart
-version: 1.0.0
-home: https://github.com/aws-lambdas-to-azure-quarkus-containers/quarkus-kafka-quickstart.git
-maintainers:
-- name: cloudnative-users

@@ -1,7 +1,7 @@
 apiVersion: v2 #helm v3
 description: A Helm chart for the Quarkus Scheduled Quickstart
-name: quickstart-lambda-to-quarkus-kafka
+name: quickstart-lambda-to-quarkus-scheduled
 version: 1.0.0
-home: https://github.com/aws-lambdas-to-azure-quarkus-containers/quickstart-lambda-to-quarkus-kafka.git
+home: https://github.com/aws-lambdas-to-azure-quarkus-containers/quickstart-lambda-to-quarkus-scheduled.git
 maintainers:
 - name: cloudnative-users
