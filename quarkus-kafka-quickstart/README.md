@@ -353,7 +353,7 @@ oc login --server=https://api.<DOMAIN>:6443 -u <username> -p <password)
 
 ## Deploy the container image to OCP
 
-This repo contains a folder called **chart**, this contains a Helm chart that deploys this application. The following files are templates :
+This repo contains a folder called **chart**, this contains a [Helm chart](chart) that deploys this application. The following files are templates :
 
    * `configmap.yaml` : defines the application.properies that configures our quarkus application
    * `deployment.yaml` : defines the details of how are image is deployed
