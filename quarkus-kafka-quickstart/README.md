@@ -1,6 +1,6 @@
 # Quarkus Kafka Quick start
 
-*_Quickstart characteristics_*: this quickstart is a good place to start if you are building an event or message driven application, it demonstrates, connecting and authenticating with Kafka, publishing and subscribing to messages.
+This quickstart is a good place to start if you are migrating an event or message driven lambda application. I it demonstrates, connecting and authenticating with Kafka, publishing and subscribing to messages.
 
 This project attempts to be the simplest possible project that provides a manual workflow for deploying an application with the following features:
 
@@ -15,78 +15,88 @@ This project attempts to be the simplest possible project that provides a manual
 
 # Migrating a Message Triggered Based (Long Running) Lambda to Quarkus Application
 
-* Identify the main Lambda Function and start code migration from it eg.
-```JAVA
-     public List<String> handleRequest(SQSEvent event, Context context)
-```
-* For a lambda which starts as the result of a _REST_ call and creates a message/event, place the lambda code in `EventResource.java#in` method adjusting appropriately the `@Path` configurations and HTTP Method (eg. `@POST`) to match the lambda's REST trigger.
-* For a lambda which starts as a result of a _message_, place the lambda code in `EventResource.java#consumeQuickstartKafkaIn` method adjusting the `@Incoming` configuration to the `Topic` name monitored by the lambda (adjust all occurrences as configs also in `values.yaml` and `application.properties`).
+## Define Configurations
 
-## The Code
-
-The source code is in the `/src` folder. The central class is `com.redhat.cloudnative.kafka.EventResource.java`.
-
-It's dependencies are defined in the pom.xml, of note is the dependency for Kafka
-
-```XML
+* Add configurations for local development and testing in [`src/main/resources/application.properties`](src/main/resources/application.properties)
+* Add configurations for deployment to Openshift in [`helm chart values`](chart/values.yaml) and [`helm chart template resources`](chart)* Quarkus application dependencies are defined in the [pom.xml](pom.xml). Note is the dependencies for scheduler service, Kafka and Cosmoddb integrations
+  ```XML
     <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
     </dependency>
-```
+  ```
 
-### A Rest Endpoint that forwards the message to a Kafka topic
+## Code Migrations
 
-An example of a method that exposes an HTTP REST endpoint and forwards the payload it receives together with a header to a Kafka Topic :
+* Java Lambda to `QuarkusApplication`
+  * Identify the main Lambda Function and start code migration from it eg.
+  ```JAVA
+       public List<String> handleRequest(SQSEvent event, Context context)
+  ```
 
-```JAVA
-    @Inject
-    @Channel("quickstart-kafka-out")
-    Emitter<Event> quickstartKafkaOut;
+  * For a lambda which starts as the result of a _REST_ call and creates a message/event, place the lambda code in [EventResource.java#in](src/main/java/com/redhat/cloudnative/kafka/EventResource.java) method adjusting appropriately the `@Path` configurations and HTTP Method (eg. `@POST`) to match the lambda's REST trigger. 
+  ```JAVA
+    @ApplicationScoped
+    @Path("/event")
+    public class EventResource {
+    
+        private static final Logger Log = Logger.getLogger(EventResource.class);
+    
+        @Inject
+        ObjectMapper mapper;
+    
+        @Inject
+        MeterRegistry registry;
+    
+        @Inject
+        KafkaClientService clientService;
+    
+        @Inject
+        @Channel("quickstart-kafka-out")
+        Emitter<Event> quickstartKafkaOut;
+    
+        @POST
+        @Produces(MediaType.TEXT_PLAIN)
+        @Consumes(MediaType.APPLICATION_JSON)
+        @Path("/in")
+        public String in(Event event) throws JsonProcessingException {
+    
+            Log.info("Event received from REST : " + mapper.writeValueAsString(event));
+    
+            // FIXME - Call the Lambda handle method
+    
+            OutgoingKafkaRecordMetadata<String> metadata = OutgoingKafkaRecordMetadata.<String>builder()
+                .withHeaders(new RecordHeaders().add("tracking-id", UUID.randomUUID().toString().getBytes()).add("tenant", "Mytenant".getBytes()))
+                .build();
+    
+            event.setType("From : quickstart-kafka-out");
+    
+            Message msg = Message.of(event).addMetadata(metadata);
+    
+            quickstartKafkaOut.send(msg);
+    
+            registry.counter("events", Tags.of("event_type", event.getType())).increment();
+    
+            event.setType("From : quickstart-kafka-out");
+    
+            return "OK";
+        }
+  ```
 
-    @POST
-    @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/in")
-    public String in(Event event) throws JsonProcessingException {
-
-        Log.info("Event received from REST : " + mapper.writeValueAsString(event));
-
-        OutgoingKafkaRecordMetadata<String> metadata = OutgoingKafkaRecordMetadata.<String>builder()
-            .withHeaders(new RecordHeaders().add("tracking-id", UUID.randomUUID().toString().getBytes()).add("tenant", "Mytenant".getBytes()))
-            .build();
-
-        event.setType("From : quickstart-kafka-out");
-
-        Message msg = Message.of(event).addMetadata(metadata);
-
-        quickstartKafkaOut.send(msg);
-
-        registry.counter("events", Tags.of("event_type", event.getType())).increment();
-
-        event.setType("From : quickstart-kafka-out");
-
-        return "OK";
-    }
-```
-
-The Channel Emitter is responsible for sending the message to Kafka. More Documentation can be found on this here : https://quarkus.io/guides/kafka#sending-messages-with-emitter
-
-### Subscription to a Kafka topic to react on _incoming_ messages
-
-Below is a code example that subscribes to an incoming message channel and processes the incoming message in the method below :
-
-```JAVA
+  * For a lambda which starts as a result of a _message_, place the lambda code in [EventResource.java#consumeQuickstartKafkaIn](src/main/java/com/redhat/cloudnative/kafka/EventResource.java) method adjusting the `@Incoming` configuration to the `Topic` name monitored by the lambda (adjust all occurrences as configs also in `values.yaml` and `application.properties`).
+  ```JAVA
     @Incoming("quickstart-kafka-in")
     public CompletionStage<Void> consumeQuickstartKafkaIn(Message<Event> msg) {
-
+  
         try{
             Log.info("consumeQuickstartKafkaIn : Event received from Kafka");
-
+  
             registry.counter("events", Tags.of("event_type", msg.getPayload().getType())).increment();
-
+  
             Event event = msg.getPayload();
             Log.info("Payload : "+event);
+  
+            // FIXME - Call the Lambda handle method
         }
         catch (Exception e) {
             Log.error(e.getMessage());    
@@ -94,16 +104,18 @@ Below is a code example that subscribes to an incoming message channel and proce
         finally {
             return msg.ack();
         }
-    }
-```
+      }
+    ```
+
+  The Channel Emitter is responsible for sending the message to Kafka. More Documentation can be found on this here : https://quarkus.io/guides/kafka#sending-messages-with-emitter
+
 
 # Prerequisites
 
-   * An Azure login
-   * An Azure container Registry
-   * A login to an Openshift 4 cluster
-   * Red Hat's AMQ Streams Operator, this deploys and manages Kafka clusters and is otherwise known as Strimzi.
-
+* An Azure login
+* An Azure container Registry
+* A login to an Openshift 4 cluster
+* Red Hat's AMQ Streams Operator, this deploys and manages Kafka clusters and is otherwise known as Strimzi.
 
 Below is an example of a Custom Resource (`CR`) that creates a Kafka cluster.
 
@@ -204,8 +216,7 @@ A single partition guarantees message ordering, multiple replicas, message resil
   oc apply -f prerequisites/prerequisites.yaml
   ```
 
-
-# Quarkus
+# Running & Testing the application
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
@@ -274,17 +285,12 @@ If you want to learn more about Quarkus, please visit its website: https://quark
   events_total{event_type="kafka-in-req"} 1.0
   ```
 
-
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
-
-
-
 
 Notice the message acknowledgement in the finally block. Always acknowledge messages in some way. More details can be found here : https://quarkus.io/guides/kafka#receiving-messages-from-kafka
 
 
-
-# Packaging and running the application
+## Packaging and running the application
 
 The application can be packaged using:
 ```shell script

@@ -57,6 +57,8 @@ public class EventResource {
 
         Log.info("Event received from REST : " + mapper.writeValueAsString(event));
 
+        // FIXME - Call the Lambda handle method
+
         OutgoingKafkaRecordMetadata<String> metadata = OutgoingKafkaRecordMetadata.<String>builder()
             .withHeaders(new RecordHeaders().add("tracking-id", UUID.randomUUID().toString().getBytes()).add("tenant", "Mytenant".getBytes()))
             .build();
@@ -84,6 +86,7 @@ public class EventResource {
 
             Event event = msg.getPayload();
             Log.info("Payload : "+event);
+            // FIXME - Call the Lambda handle method
         }
         catch (Exception e) {
             Log.error(e.getMessage());    

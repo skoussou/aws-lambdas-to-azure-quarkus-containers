@@ -14,3 +14,9 @@
 # Maven
 log/
 target/
+
+# Certs
+.crt
+.pem
+cacerts
+
