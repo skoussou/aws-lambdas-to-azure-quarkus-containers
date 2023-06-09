@@ -310,7 +310,7 @@ mvn package -Dquarkus.package.type=uber-jar
 The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
 
 
-## Building the Container
+## Build Container Image & Deploy in Image Registry
 
 Run the script
 
@@ -355,14 +355,14 @@ oc login --server=https://api.<DOMAIN>:6443 -u <username> -p <password)
 
 This repo contains a folder called **chart**, this contains a [Helm chart](chart) that deploys this application. The following files are templates :
 
-   * `configmap.yaml` : defines the application.properies that configures our quarkus application
+   * `configmap.yaml` : defines the application.properties that configures our quarkus application
    * `deployment.yaml` : defines the details of how are image is deployed
    * `quickstart-kafka-in-topic.yaml` : defines a kafka topic
    * `quickstart-kafka-out-topic.yaml` : defines a kafka topic
    * `quickstart-kafka-user.yaml` : defines a kafka user
    * `route.yaml` : defines an ingress to the app's rest endpoint
    * `service.yml` : defines a loadbalancer to distribute traffic accross multiple podscontaing our app
-   * `serviceAccount.yaml` : defines a service account for our deployment which is allowd to view secrets.
+   * `serviceAccount.yaml` : defines a service account for our deployment which is allowed to view secrets.
 
 Here is the `values` file, contains the values that will be injected into this template (**_UPDATE ACCORDINGLY_**):
 
