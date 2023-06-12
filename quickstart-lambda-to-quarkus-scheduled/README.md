@@ -437,3 +437,23 @@ oc logs -f quarkus-scheduled-<POD ID>
 ```shell script
 oc -n kafkas run kafka-consumer -ti --image=registry.redhat.io/amq7/amq-streams-kafka-33-rhel8:2.3.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server  wc-test-kafka-cluster-kafka-bootstrap.lambdas-tests.svc.cluster.local:9092 --topic sim-state-manager --from-beginning
 ```
+
+## Metrics
+
+Metrics in a format useful to Prometheus are available at a specific end point : `/q/metrics`
+
+The numbers of different kafka topic are measured, this is because a custom metric has been included in the code
+
+
+
+# Further Reading
+
+* [Quarkus Kafka Reference Guide](https://quarkus.io/guides/kafka)
+* [Strimzi](https://strimzi.io/)
+* [AMQ Streams Docs](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/html/amq_streams_on_openshift_overview/index)
+* [Apache Kafka](https://kafka.apache.org/)
+* [Azure Container Registry Docs](https://docs.microsoft.com/en-us/azure/container-registry/)
+* [Docker Docs](https://docs.docker.com/)
+* [Podman Docs](https://docs.podman.io/en/latest/)
+* [Openshift Docs](https://docs.openshift.com/container-platform/4.12/welcome/index.html)
+* [Openshift cli documents](https://docs.openshift.com/container-platform/4.12/cli_reference/openshift_cli/getting-started-cli.html)
