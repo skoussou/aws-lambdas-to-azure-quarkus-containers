@@ -2,7 +2,7 @@
 
 ## Rest API (Deployment Based OCP) Quarkus Quickstart
 
-* git repository: [`quickstart-lambda-to-quarkus-rest`](https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/quickstart-cronjob-quarkus)
+* git repository: [`quickstart-lambda-to-quarkus-rest`](https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/quickstart-lambda-to-quarkus-rest)
 * quickstart characteristics: A REST API resulting in a CosmosDB Connection and entry creation
 
 ## Job Main (CronJob Based OCP) Quarkus Quickstart
