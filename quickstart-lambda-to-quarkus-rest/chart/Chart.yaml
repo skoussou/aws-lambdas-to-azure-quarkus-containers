@@ -1,0 +1,8 @@
+apiVersion: v2 #helm v3
+appVersion: v1.0.0
+description: A Helm chart for the Quarkus Rest Quickstart
+name: quickstart-lambda-to-quarkus-rest
+version: 1.0.0
+home: https://github.com/aws-lambdas-to-azure-quarkus-containers/quickstart-lambda-to-quarkus-rest.git
+maintainers:
+- name: cloudnative-users

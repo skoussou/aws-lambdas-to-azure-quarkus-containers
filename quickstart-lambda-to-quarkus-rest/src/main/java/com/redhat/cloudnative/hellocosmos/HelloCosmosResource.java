@@ -1,18 +1,18 @@
-package com.wirelesscar.vw.residency.hellocosmos;
+package com.redhat.cloudnative.hellocosmos;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.wirelesscar.vw.residency.hellocosmos.model.HelloCountry;
+import com.redhat.cloudnative.hellocosmos.model.HelloCountry;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tags;
@@ -32,6 +32,8 @@ public class HelloCosmosResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("{country}")
     public String hello(String country) {
+
+        System.out.println(String.format("Creating new Country Item fpr country [%s]", country));
 
         // FIXME - Business Code call to Lambda hander method
 
@@ -55,6 +57,8 @@ public class HelloCosmosResource {
 
         // FIXME - Business Code call to Lambda hander method
 
+        //  <CreateItem>
+        //  Create item using container that we created
         CosmosItemResponse item = connection.getContainer().createItem(hc, new PartitionKey(hc.getPartitionKey()), new CosmosItemRequestOptions());
         System.out.println(String.format("Created item with request charge of %.2f within" + " duration %s", item.getRequestCharge(), item.getDuration()));
         

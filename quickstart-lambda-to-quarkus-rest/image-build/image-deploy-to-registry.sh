@@ -10,18 +10,35 @@ if [[ "$BUILD_TOOL" != "podman" ]] && [[ "$BUILD_TOOL" != "docker" ]]; then
 fi
 
 IMAGE=quickstart-rest
-REGISTRY_HOST=residencyregistry.azurecr.io
-REPO=quickstart-rest
+REGISTRY_HOST=$2 #Point to registry
+REPO=$3
 VERSION=latest
-USER=00000000-0000-0000-0000-000000000000
+USER=$4
+AZUREREGISTRYNAME=$5
+REGISTRY_PASS=$6
+TOKEN=""
 
-TOKEN=$(az acr login --name residencyregistry --expose-token | jq -r .accessToken)
+TOKEN=$(az acr login --name $AZUREREGISTRYNAME --expose-token | jq -r .accessToken)
+echo
 echo TOKEN : $TOKEN
-# az acr login --name residencyregistry
-$BUILD_TOOL login ${REGISTRY_HOST} -u ${USER} -p $TOKEN
+sleep 4
+if [[ "$TOKEN" != "" ]]; then
+  # az acr login --name <AZUREREGISTRYNAME>
+  $BUILD_TOOL login ${REGISTRY_HOST} -u ${USER} -p $TOKEN
+else
+  echo "$BUILD_TOOL login ${REGISTRY_HOST} -u ${USER} -p $REGISTRY_PASS"
+  $BUILD_TOOL login ${REGISTRY_HOST} -u ${USER} -p $REGISTRY_PASS
+fi
 
 TAG=$REGISTRY_HOST/$REPO/$IMAGE:$VERSION
 
+echo "$BUILD_TOOL tag $IMAGE $TAG"
 $BUILD_TOOL tag $IMAGE $TAG
+
+sleep 2
+echo "--------------------"
+podman images |grep $IMAGE
+echo "--------------------"
+sleep 3
 
 $BUILD_TOOL push $TAG

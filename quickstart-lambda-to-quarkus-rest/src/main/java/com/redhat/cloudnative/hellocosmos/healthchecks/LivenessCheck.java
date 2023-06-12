@@ -1,10 +1,10 @@
-package com.wirelesscar.vw.residency.hellocosmos.healthchecks;
+package com.redhat.cloudnative.hellocosmos.healthchecks;
 
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.Liveness;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @Liveness
 @ApplicationScoped  

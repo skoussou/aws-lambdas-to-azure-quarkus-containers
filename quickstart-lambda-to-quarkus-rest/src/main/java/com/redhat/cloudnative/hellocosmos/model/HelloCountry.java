@@ -1,4 +1,4 @@
-package com.wirelesscar.vw.residency.hellocosmos.model;
+package com.redhat.cloudnative.hellocosmos.model;
 
 public class HelloCountry {
 

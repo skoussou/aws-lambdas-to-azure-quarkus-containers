@@ -1,0 +1,8 @@
+name: quickstart-rest
+
+image:
+  registry: <registryname>.azurecr.io      #Point to registry
+  repository: quickstart-rest             #Point to repository
+  name: quickstart-rest
+  version: latest
+
