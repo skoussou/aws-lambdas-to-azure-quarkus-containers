@@ -345,7 +345,7 @@ This will also build the image and store in a registry local to your laptop.
 Login at
 
 ```
-https://console-openshift-console.apps.arcaroytxry.westus2.aroapp.io/
+https://console-openshift-console.apps.<DOMAIN>/
 ```
 
 ## Download the oc cli

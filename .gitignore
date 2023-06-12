@@ -18,5 +18,5 @@ target/
 # Certs
 .crt
 .pem
-cacerts
+cacerts*
 
