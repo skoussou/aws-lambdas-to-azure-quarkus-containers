@@ -20,14 +20,6 @@ This project attempts to be the simplest possible project that provides a manual
 * Quarkus application dependencies are defined in the [pom.xml](pom.xml). Note these are the dependencies for scheduler service, Kafka and Cosmoddb integrations
   ```XML
     <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-scheduler</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
       <version>${azure-cosmos.version}</version>
@@ -58,7 +50,7 @@ This project attempts to be the simplest possible project that provides a manual
         @Path("{country}")
         public String hello(String country) {
     
-            // FIXME - Business Code call to Lambda hander method
+            // FIXME - Business Code call to Lambda handler method
             ...
         }
     
@@ -68,7 +60,7 @@ This project attempts to be the simplest possible project that provides a manual
         @Path("/create")
         public String helloPost(HelloCountry hc) {
     
-            // FIXME - Business Code call to Lambda hander method
+            // FIXME - Business Code call to Lambda handler method
             ...
         }
     
@@ -87,7 +79,10 @@ This project attempts to be the simplest possible project that provides a manual
     
         @ConfigProperty(name = "cosmos.container")
         protected String containerName;
-    
+
+        @ConfigProperty(name = "cosmos.partitionkey")
+        public String partitionkey;    
+
         @ConfigProperty(name = "cosmos.master.key")
         public String masterKey;
     
@@ -122,6 +117,14 @@ This project attempts to be the simplest possible project that provides a manual
             database = client.getDatabase(databaseName);
             container = database.getContainer(containerName);
         }
+  
+        private void createDatabaseIfNotExists() throws Exception {
+              ...
+        }
+
+        private void createContainerIfNotExists() throws Exception {
+              ...
+        }  
     
         public CosmosContainer getContainer() {
             return container;

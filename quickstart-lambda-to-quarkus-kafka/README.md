@@ -411,7 +411,7 @@ test.sh
 * Check container POD logs
 
 ```shell script
-oc logs -f quarkus-kafka-<PODID> 
+oc logs -f -l  app=quickstart-kafka
 ```
 
 * Check AMQ Streams Kafka POD for the messages received

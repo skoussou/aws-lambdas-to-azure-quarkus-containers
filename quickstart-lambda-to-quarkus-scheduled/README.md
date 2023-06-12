@@ -407,7 +407,7 @@ config:
 
 he template is usually used from within a CICD pipeline and executed by ArgoCD, but we can deploy it from the command line for convenience. The following command deploys from the command line, assuming that you are logged onto openshift and in your target project :
 
-```
+``` shell script
 cd chart && helm template -f values.yaml . | oc apply -f -
 ```
 
@@ -429,7 +429,7 @@ test.sh
 * Check container POD logs
 
 ```shell script
-oc logs -f quarkus-scheduled-<POD ID> 
+oc logs -f -l  app=quickstart-scheduled
 ```
 
 * Check AMQ Streams Kafka POD for the messages received

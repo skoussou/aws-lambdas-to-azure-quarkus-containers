@@ -12,7 +12,7 @@ Examples of the scripts can be found under the [hello-cosmos](https://github.com
 ```bash
 image-build.sh [docker|podman]
 start-local-cosmosdb.sh [docker|podman]
-apply-local-cosmosdb-certs.sh  [docker|podman]
+cosmodb-cert-in-cacerts.sh  [docker|podman]
 container-local-run.sh [docker|podman]
 ```
 ## Windows Based OS

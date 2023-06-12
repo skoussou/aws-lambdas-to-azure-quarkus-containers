@@ -35,7 +35,7 @@ public class HelloCosmosResource {
 
         System.out.println(String.format("Creating new Country Item fpr country [%s]", country));
 
-        // FIXME - Business Code call to Lambda hander method
+        // FIXME - Business Code call to Lambda handler method
 
         HelloCountry hc = new HelloCountry();
         hc.setHello(country);
@@ -55,7 +55,7 @@ public class HelloCosmosResource {
     @Path("/create")
     public String helloPost(HelloCountry hc) {
 
-        // FIXME - Business Code call to Lambda hander method
+        // FIXME - Business Code call to Lambda handler method
 
         //  <CreateItem>
         //  Create item using container that we created
