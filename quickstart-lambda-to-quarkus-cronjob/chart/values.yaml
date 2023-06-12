@@ -1,0 +1,16 @@
+name: quickstart-lambda-to-quarkus-cronjob
+schedule: '"* * * * *"'
+image:
+  registry: <your-registry>>.azurecr.io
+  repository: token-madeup
+  name: token-madeup
+  version: 0.0.1
+config:
+  some:
+    actor:
+      name: 'Registering'
+      domain: 'Test QA'
+  loglevel: INFO
+  cosmos: 
+    database: token-cache
+    partitionkey: clientId

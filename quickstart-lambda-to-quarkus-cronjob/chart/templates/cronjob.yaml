@@ -1,0 +1,32 @@
+---
+kind: CronJob
+apiVersion: batch/v1beta1
+metadata:
+  name: {{ .Values.name }}
+spec:
+  schedule: {{ .Values.schedule }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: {{ .Values.name }}-application-properties
+              configMap:
+                name: {{ .Values.name }}-application-properties
+          containers:
+            - name: {{ .Values.name }}-cronjob
+              command:
+                - java
+                - '-jar'
+                - /deployments/quarkus-run.jar
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - name: {{ .Values.name }}-application-properties
+                  mountPath: /deployments/config
+              envFrom:
+                - secretRef:
+                    name: {{ .Values.name }}-some-credentials
+                - secretRef:
+                    name: {{ .Values.config.cosmos.database }}-connection
+              image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.version }}
+          restartPolicy: OnFailure

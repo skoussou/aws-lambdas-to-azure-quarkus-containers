@@ -1,0 +1,13 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.name }}-application-properties
+data:
+  application.properties: |-
+    quarkus.log.level={{ .Values.config.loglevel }}
+    cosmos.database={{ .Values.config.cosmos.database }}-database
+    cosmos.container={{ .Values.config.cosmos.container }}
+    cosmos.partitionkey={{ .Values.config.cosmos.partitionkey }}
+    someActor={{ .Values.config.some.actor.name }}
+    someDomain={{ .Values.config.some.actor.domain }}
