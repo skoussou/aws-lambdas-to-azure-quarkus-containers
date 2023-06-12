@@ -180,7 +180,7 @@ If you want to learn more about Quarkus, please visit its website: https://quark
   
   * Test via curl `/hello/France`
     ```BASH
-    curl -X POST http://localhost:8080/hello/create -H 'accept: text/plain' -H 'Content-Type: application/json' -d '{ "id": "4", "hello": "Greece", "partitionKey": "Europe" }'
+    curl -X GET http://localhost:8080/hello/France -H 'accept: text/plain'
     ```
 * For unit `Test` (**Note:** you need in the `application.properties` to point to an active CosmosDB via `attribute.connection_string.0`, `cosmos.master.key` )
   ```BASH
@@ -254,6 +254,7 @@ This repo contains a folder called **chart**, this contains a [Helm chart](chart
 * `deployment.yaml` : defines the details of how are image is deployed
 * `quickstart-kafka-in-topic.yaml` : defines a kafka topic
 * `route.yaml` : defines an ingress to the app's rest endpoint (if serverless service is not used)
+* `secret.yaml` : defines the Cosmos DB connection details for the production  (**modify me**)
 * `service.yml` : defines a loadbalancer to distribute traffic across multiple pods containing our app
 
 Here is the `values` file, contains the values that will be injected into this template (**_UPDATE ACCORDINGLY_**):
@@ -282,3 +283,36 @@ If you want to delete them, just run :
 ```shell script
 cd chart && helm template -f values.yaml . | oc delete -f -
 ```
+
+## Test the application
+
+```shell script
+cd rest-test
+test.sh
+```
+
+* Check container POD logs
+
+```shell script
+oc logs -f -l  app=quickstart-rest
+```
+
+## Metrics
+
+Metrics in a format useful to Prometheus are available at a specific end point : `/q/metrics`
+
+The numbers of different kafka topic are measured, this is because a custom metric has been included in the code
+
+
+
+# Further Reading
+
+* [Quarkus Kafka Reference Guide](https://quarkus.io/guides/kafka)
+* [Strimzi](https://strimzi.io/)
+* [AMQ Streams Docs](https://access.redhat.com/documentation/en-us/red_hat_amq/2021.q3/html/amq_streams_on_openshift_overview/index)
+* [Apache Kafka](https://kafka.apache.org/)
+* [Azure Container Registry Docs](https://docs.microsoft.com/en-us/azure/container-registry/)
+* [Docker Docs](https://docs.docker.com/)
+* [Podman Docs](https://docs.podman.io/en/latest/)
+* [Openshift Docs](https://docs.openshift.com/container-platform/4.12/welcome/index.html)
+* [Openshift cli documents](https://docs.openshift.com/container-platform/4.12/cli_reference/openshift_cli/getting-started-cli.html)
