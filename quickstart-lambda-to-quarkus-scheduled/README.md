@@ -280,10 +280,10 @@ If you want to learn more about Quarkus, please visit its website: https://quark
   * The Scheduled service results in messages being placed every `10s` in the `sim-state-manager"` topic
     ```shell script
     podman exec -it 9f529e160847 ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic sim-state-manager --from-beginning
-    {"externalId":"1bb4480f-83a0-4017-bf5c-25ea8b8b490e","event":"DEVICE_DATA_UPDATED","message":"Update 1","data":"additional information","statusCode":null,"trackingId":"f1da9a30-0301-4ffd-94ca-a4fc0b826d14"}
-    {"externalId":"17d48cc9-bacf-4cbb-bc62-6b004e434562","event":"DEVICE_DATA_UPDATED","message":"Update 1","data":"additional information","statusCode":null,"trackingId":"5704c1aa-e58c-4a69-b7ff-0e1b041286fd"}
-    {"externalId":"28257bcb-e1d0-4b1d-ab62-78837e704d80","event":"DEVICE_DATA_UPDATED","message":"Update 1","data":"additional information","statusCode":null,"trackingId":"56837ab1-058a-4353-b0eb-1da27a7d8ba8"}
-    {"externalId":"35178044-cd1f-4779-a550-77fcdcb6a51a","event":"DEVICE_DATA_UPDATED","message":"Update 1","data":"additional information","statusCode":null,"trackingId":"acc879b3-3387-4044-8433-b88dcd90eae2"}
+    {"externalId":"1bb4480f-83a0-4017-bf5c-25ea8b8b490e","event":"DEVICE_UPDATED","message":"Update 1","data":"additional information","statusCode":null,"trackingId":"f1da9a30-0301-4ffd-94ca-a4fc0b826d14"}
+    {"externalId":"17d48cc9-bacf-4cbb-bc62-6b004e434562","event":"DEVICE_UPDATED","message":"Update 1","data":"additional information","statusCode":null,"trackingId":"5704c1aa-e58c-4a69-b7ff-0e1b041286fd"}
+    {"externalId":"28257bcb-e1d0-4b1d-ab62-78837e704d80","event":"DEVICE_UPDATED","message":"Update 1","data":"additional information","statusCode":null,"trackingId":"56837ab1-058a-4353-b0eb-1da27a7d8ba8"}
+    {"externalId":"35178044-cd1f-4779-a550-77fcdcb6a51a","event":"DEVICE_UPDATED","message":"Update 1","data":"additional information","statusCode":null,"trackingId":"acc879b3-3387-4044-8433-b88dcd90eae2"}
 
     ```
   * The application logs correlate the above results

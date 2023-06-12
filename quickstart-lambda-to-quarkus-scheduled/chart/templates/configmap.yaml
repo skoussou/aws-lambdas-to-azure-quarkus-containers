@@ -29,4 +29,4 @@ data:
 
     # Kubernetes Secret
     %prod.quarkus.kubernetes-config.secrets.enabled=true
-    %prod.quarkus.kubernetes-config.secrets=sim-vehicle-view-cosmos-master-key,sim-changeid-cosmos-master-key
+    %prod.quarkus.kubernetes-config.secrets=sim-changeid-cosmos-master-key

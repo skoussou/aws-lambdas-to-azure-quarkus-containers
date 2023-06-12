@@ -29,7 +29,7 @@ public class LambdaFunction extends MasterDataPoller {
 
     try{
       // Normally arrives from DB polling
-      SimEvent newEvent = new SimEvent(simId, SimEventType.DEVICE_DATA_UPDATED, "Update 1", "additional information", UUID.randomUUID().toString());
+      SimEvent newEvent = new SimEvent(simId, SimEventType.DEVICE_UPDATED, "Update 1", "additional information", UUID.randomUUID().toString());
 
       super.handleNotifications(newEvent);
 
