@@ -1,21 +1,21 @@
 name: quickstart-kafka
 image:
-  registry: quay.io #Point to registry
-  repository: skoussou
+  registry: <registryname>.azurecr.io      #Point to registry
+  repository: quickstart-kafka             #Select repository name
   name: quickstart-kafka
   version: latest
 
 config:
-  loglevel: INFO       
+  loglevel: INFO
   kafka:
-    cluster: 
+    cluster:
       name: wc-test-kafka-cluster
     user: quickstart-kafka-user
     intopic: quickstart-kafka-in
     outtopic: quickstart-kafka-out
   ocp:
     cluster:
-      domain: svc.cluster.local
-      
+      domain: apps.<YOUR-DOMAIN>.com
+
 
   
