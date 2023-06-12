@@ -361,7 +361,7 @@ This repo contains a folder called **chart**, this contains a [Helm chart](chart
    * `quickstart-kafka-out-topic.yaml` : defines a kafka topic
    * `quickstart-kafka-user.yaml` : defines a kafka user
    * `route.yaml` : defines an ingress to the app's rest endpoint
-   * `service.yml` : defines a loadbalancer to distribute traffic accross multiple podscontaing our app
+   * `service.yml` : defines a loadbalancer to distribute traffic across multiple pods containing our app
    * `serviceAccount.yaml` : defines a service account for our deployment which is allowed to view secrets.
 
 Here is the `values` file, contains the values that will be injected into this template (**_UPDATE ACCORDINGLY_**):
@@ -439,6 +439,6 @@ The numbers of different kafka topic are measured, this is because a custom metr
    * [Azure Container Registry Docs](https://docs.microsoft.com/en-us/azure/container-registry/)
    * [Docker Docs](https://docs.docker.com/)
    * [Podman Docs](https://docs.podman.io/en/latest/)
-   * [Openshift Docs](https://docs.openshift.com/container-platform/4.10/welcome/index.html)
-   * [Openshift cli documents](https://docs.openshift.com/container-platform/4.7/cli_reference/openshift_cli/getting-started-cli.html)
+   * [Openshift Docs](https://docs.openshift.com/container-platform/4.12/welcome/index.html)
+   * [Openshift cli documents](https://docs.openshift.com/container-platform/4.12/cli_reference/openshift_cli/getting-started-cli.html)
 
