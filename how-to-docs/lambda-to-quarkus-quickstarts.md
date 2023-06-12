@@ -13,7 +13,7 @@
 
 ## Scheduled Job (Deployment Based OCP) Quarkus Quickstart
 
-* git repository: [`quickstart-lambda-to-quarkus-scheduled`](https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/quickstart-lambda-to-quarkus-scheduledt)
+* git repository: [`quickstart-lambda-to-quarkus-scheduled`](https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/quickstart-lambda-to-quarkus-scheduled)
 * quickstart characteristics: This is the skeleton repository to start if you are building a scheduled based job, it demonstrates access to Cosmos DB and using Kafka
 
 ## Message Initiated microservice (Deployment Based OCP) Quarkus Quickstart
