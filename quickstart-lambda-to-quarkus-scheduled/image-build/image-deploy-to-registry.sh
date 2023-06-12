@@ -37,7 +37,7 @@ $BUILD_TOOL tag $IMAGE $TAG
 
 sleep 2
 echo "--------------------"
-podman images |grep quickstart-kafka
+podman images |grep $IMAGE
 echo "--------------------"
 sleep 3
 

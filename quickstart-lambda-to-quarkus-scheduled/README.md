@@ -275,7 +275,7 @@ If you want to learn more about Quarkus, please visit its website: https://quark
   ```shell script
   mvn compile quarkus:dev
   ``` 
-  * The cosmodb connection has been established and a database has been created (see https://localhost:8081/_explorer/index.html)
+  * The cosmodb connection has been established and a database and container has been created (see https://localhost:8081/_explorer/index.html)
     ![cosmodb details](./images/cosmodb-emulator-data.png)
   * The Scheduled service results in messages being placed every `10s` in the `sim-state-manager"` topic
     ```shell script
