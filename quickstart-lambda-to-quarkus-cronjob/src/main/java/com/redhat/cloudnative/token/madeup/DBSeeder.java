@@ -17,11 +17,8 @@ import io.quarkus.runtime.Startup;
 public class DBSeeder {
     
     private static final Logger Log = Logger.getLogger(DBSeeder.class);
-
     @Inject
     DefaultRepository repository;
-
-
     public void seed()  {
         DTO dto = createDTO();
         //repository.deleteDTO(dto);

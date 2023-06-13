@@ -20,9 +20,9 @@ import java.time.Duration;
 
 @ApplicationScoped
 @QuarkusMain
-public class MadeupMain implements QuarkusApplication {
+public class JobMain implements QuarkusApplication {
 
-    private static final Logger Log = Logger.getLogger(MadeupMain.class);
+    private static final Logger Log = Logger.getLogger(JobMain.class);
 
 
     @Inject
@@ -38,7 +38,7 @@ public class MadeupMain implements QuarkusApplication {
 
     @Override
     public int run(String... args) {
-      Log.info("Running .... ");
+      Log.info("Running JobMain .... ");
         this.httpClient = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(10))
             .version(Version.HTTP_1_1)
