@@ -26,9 +26,9 @@ graph TB
   Node5a[Promotion Namespaces Definition]
   Node5a -- Optional --> Node5b[Setup ArgoCD Application for CI Pipeline]
   Node5a --> Node5c[Setup ArgoCD Application for GitOps]
-  click Node5a "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/automate-app-ocp-delivery.md#promotion-namespaces" "Promotion Namespaces"
-  click Node5b "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/automate-app-ocp-delivery.md#create-new-service-pipeline-for-the-service-to-perform-continuous-integration" "CI Pipeline"
-  click Node5c "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/automate-app-ocp-delivery.md#create-gitops-resources-for-the-new-service-to-perform-continuous-delivery" "CD Application"
+  click Node5a "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/automate-app-ocp-delivery.md#promotion-namespaces" "Promotion Namespaces"
+  click Node5b "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/automate-app-ocp-delivery.md#create-new-service-pipeline-for-the-service-to-perform-continuous-integration" "CI Pipeline"
+  click Node5c "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/automate-app-ocp-delivery.md#create-gitops-resources-for-the-new-service-to-perform-continuous-delivery" "CD Application"
   end
 
   subgraph "Prepare Service for OCP Automated delivery via DevOps Tooling"
@@ -53,21 +53,21 @@ graph TB
   Node2n -- Resources Ready --> Node5a
   Node2o -- Resources Ready --> Node5a
   Node2p -- Resources Ready --> Node5a
-  click Node2d "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#kafkauser-kafka-useryaml-resource-configuration-guidelines" "Kafka User Resource"
-  click Node2f "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#valuesyaml-resource-configuration-guidelines" "values.yaml"
-  click Node2g "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#configmap-configmapyaml-resource-configuration-guidelines" "configmap.yaml"
-  click Node2h "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#externalsecret-externalsecretyaml-resource-configuration-guidelines" "externalsecret.yaml"
-  click Node2c "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#externalsecret-externalsecretyaml-resource-configuration-guidelines" "keyvault"
-  click Node2i "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#role-rolesyaml-resource-configuration-guidelines" "roles.yaml"
-  click Node2j "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#rolebinding-rolebindingyaml-resource-configuration-guidelines" "roleBinding.yaml"
-  click Node2k "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#serviceaccount-serviceaccountyaml-resource-configuration-guidelines" "serviceAccount.yaml"
-  click Node2l "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#deployment-deploymentyaml-resource-configuration-guidelines" "deployment.yaml"
-  click Node2q "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#cronjob-cronjobyaml-resource-configuration-guidelines" "cronjob.yaml"
-  click Node2m "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#service-serviceyaml-resource-configuration-guidelines" "service.yaml"
-  click Node2n "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#option-1-istio-virtualservice-for-service-mesh-based-service-resource-configuration-guidelines" "istio-virtualservice.yaml"
-  click Node2o "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#option-2-openshift-route-for-non-service-mesh-based-service-resource-configuration-guidelines" "route.yaml"
-  click Node2r "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#documentdatabase-cosmosdb-claimyaml-resource-configuration-guidelines" "Database Resource"
-  click Node2s "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#kafkatopic-kafka-topicyaml-resource-configuration-guidelines" "Kafka Topic Resource"
+  click Node2d "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#kafkauser-kafka-useryaml-resource-configuration-guidelines" "Kafka User Resource"
+  click Node2f "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#valuesyaml-resource-configuration-guidelines" "values.yaml"
+  click Node2g "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#configmap-configmapyaml-resource-configuration-guidelines" "configmap.yaml"
+  click Node2h "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#externalsecret-externalsecretyaml-resource-configuration-guidelines" "externalsecret.yaml"
+  click Node2c "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#externalsecret-externalsecretyaml-resource-configuration-guidelines" "keyvault"
+  click Node2i "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#role-rolesyaml-resource-configuration-guidelines" "roles.yaml"
+  click Node2j "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#rolebinding-rolebindingyaml-resource-configuration-guidelines" "roleBinding.yaml"
+  click Node2k "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#serviceaccount-serviceaccountyaml-resource-configuration-guidelines" "serviceAccount.yaml"
+  click Node2l "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#deployment-deploymentyaml-resource-configuration-guidelines" "deployment.yaml"
+  click Node2q "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#cronjob-cronjobyaml-resource-configuration-guidelines" "cronjob.yaml"
+  click Node2m "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#service-serviceyaml-resource-configuration-guidelines" "service.yaml"
+  click Node2n "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#option-1-istio-virtualservice-for-service-mesh-based-service-resource-configuration-guidelines" "istio-virtualservice.yaml"
+  click Node2o "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#option-2-openshift-route-for-non-service-mesh-based-service-resource-configuration-guidelines" "route.yaml"
+  click Node2r "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#documentdatabase-cosmosdb-claimyaml-resource-configuration-guidelines" "Database Resource"
+  click Node2s "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#kafkatopic-kafka-topicyaml-resource-configuration-guidelines" "Kafka Topic Resource"
   end
 
   subgraph "Activities to Setup and Integrate with External Dependencies"
@@ -76,8 +76,8 @@ graph TB
   Node3a[External Dependencies] --> Node3c[Integrating with Kafka]
   Node3b[Integrating with CosmosDB] -- Code Ready --> Node5a
   Node3c[Integrating with Kafka]  -- Code Ready --> Node5a
-  click Node3b "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/-/tree/main/quickstart-lambda-to-quarkus-rest#code-migrations" "CosmosDB"
-  click Node3c "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/quickstart-lambda-to-quarkus-kafka/README.md#code-migrations" "Kafka"
+  click Node3b "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/-/tree/main/quickstart-lambda-to-quarkus-rest#code-migrations" "CosmosDB"
+  click Node3c "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/quickstart-lambda-to-quarkus-kafka/README.md#code-migrations" "Kafka"
   end
 
   subgraph "Migrate new Service Code from Lambda to Quarkus"
@@ -94,12 +94,12 @@ graph TB
   Node1d -- Optional --> Node3a[External Dependencies]
   Node1e -- Optional --> Node3a[External Dependencies]
   Node1f -- Optional --> Node3a[External Dependencies]
-  click Node1a "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/container-guidelines.md#a1-application-configuration" "App Configuration"
-  click Node1b "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/container-guidelines.md#a2-application-metrics" "Setup Application Metrics"
-  click Node1c "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/-/tree/main/quickstart-lambda-to-quarkus-cronjob#migrating-a-job-based-lambda-to-quarkus-application" "Start Migrating a CronJob"
-  click Node1d "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/-/tree/main/quickstart-lambda-to-quarkus-rest#migrating-a-rest-api-based-lambda-to-quarkus-application" "Start Migrating a Rest Service"
-  click Node1e "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/-/tree/main/quickstart-lambda-to-quarkus-scheduled#migrating-a-scheduled-based-repeatable-running-lambda-to-quarkus-application" "Start Migrating a Scheduled Service"
-  click Node1f "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/quickstart-lambda-to-quarkus-kafka/README.md#migrating-a-message-triggered-long-running-lambda-to-quarkus-application" "Start Migrating a Message Triggered Service"
+  click Node1a "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/container-guidelines.md#a1-application-configuration" "App Configuration"
+  click Node1b "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/container-guidelines.md#a2-application-metrics" "Setup Application Metrics"
+  click Node1c "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/-/tree/main/quickstart-lambda-to-quarkus-cronjob#migrating-a-job-based-lambda-to-quarkus-application" "Start Migrating a CronJob"
+  click Node1d "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/-/tree/main/quickstart-lambda-to-quarkus-rest#migrating-a-rest-api-based-lambda-to-quarkus-application" "Start Migrating a Rest Service"
+  click Node1e "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/-/tree/main/quickstart-lambda-to-quarkus-scheduled#migrating-a-scheduled-based-repeatable-running-lambda-to-quarkus-application" "Start Migrating a Scheduled Service"
+  click Node1f "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/quickstart-lambda-to-quarkus-kafka/README.md#migrating-a-message-triggered-long-running-lambda-to-quarkus-application" "Start Migrating a Message Triggered Service"
   end
 
   subgraph "Migrating an AWS Lambda Service to Quarkus Container Service"
@@ -107,7 +107,7 @@ graph TB
   Node2[Choose a quickstart/skeleton quarkus service] --> Node3[Containerize the application]
   Node3[Containerize the application] -- Path: prepare for deployment --> Node2b[Create Helm Chart]
   Node3[Containerize the application] -- Path: prepare business code --> Node1a[Setup Application Configurations]
-  click Node2 "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/lambda-to-quarkus-quickstarts.md#list-of-quickstarts-for-the-migration-of-lambdas-to-quarkus" "Choose Quickstart"
+  click Node2 "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/lambda-to-quarkus-quickstarts.md#list-of-quickstarts-for-the-migration-of-lambdas-to-quarkus" "Choose Quickstart"
 
 end
 ```
