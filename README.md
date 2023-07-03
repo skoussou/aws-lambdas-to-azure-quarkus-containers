@@ -15,7 +15,7 @@ For this guide, we will assume that your Lambda service is called `banana` to ma
 
 ### High Level Migration Flow
 
-![High Level Migration FLow](images/High Level Migration Flow - Lamda-to-Quarkus.png)
+![High Level Migration FLow](images/HighLevelMigrationFlow-Lamda-to-Quarkus.png)
 
 ### Detailed Migration Flow
 
