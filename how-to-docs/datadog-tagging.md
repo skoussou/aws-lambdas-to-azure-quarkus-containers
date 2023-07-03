@@ -84,9 +84,7 @@ spec:
           image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.version }}
           volumeMounts:
           - name: {{ .Values.name }}-application-properties
-            mountPath: /deployments/config
-          - name: sim-reg-user-keystore
-            mountPath: /deployments/keystore            
+            mountPath: /deployments/config          
           - name: wc-test-kafka-cluster-truststore
             mountPath: /deployments/truststore 
           envFrom:
@@ -109,9 +107,6 @@ spec:
         - name: {{ .Values.name }}-application-properties
           configMap:
             name: {{ .Values.name }}-application-properties
-        - name: sim-reg-user-keystore
-          secret:
-            secretName: sim-reg-user-keystore
         - name: wc-test-kafka-cluster-truststore
           secret:
             secretName: wc-test-kafka-cluster-truststore                                    
