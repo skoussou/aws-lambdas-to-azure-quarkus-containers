@@ -15,7 +15,7 @@ For this guide, we will assume that your Lambda service is called `banana` to ma
 
 ### High Level Migration Flow
 
-![High Level Migration FLow](images/High-Level-Migration-Flow.png)
+![High Level Migration FLow](images/High Level Migration Flow - Lamda-to-Quarkus.png)
 
 ### Detailed Migration Flow
 
@@ -26,9 +26,6 @@ graph TB
   Node5a[Promotion Namespaces Definition]
   Node5a -- Optional --> Node5b[Setup ArgoCD Application for CI Pipeline]
   Node5a --> Node5c[Setup ArgoCD Application for GitOps]
-  click Node5a "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/automate-app-ocp-delivery.md#promotion-namespaces" "Promotion Namespaces"
-  click Node5b "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/automate-app-ocp-delivery.md#create-new-service-pipeline-for-the-service-to-perform-continuous-integration" "CI Pipeline"
-  click Node5c "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/automate-app-ocp-delivery.md#create-gitops-resources-for-the-new-service-to-perform-continuous-delivery" "CD Application"
   end
 
   subgraph "Prepare Service for OCP Automated delivery via DevOps Tooling"
@@ -53,21 +50,6 @@ graph TB
   Node2n -- Resources Ready --> Node5a
   Node2o -- Resources Ready --> Node5a
   Node2p -- Resources Ready --> Node5a
-  click Node2d "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#kafkauser-kafka-useryaml-resource-configuration-guidelines" "Kafka User Resource"
-  click Node2f "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#valuesyaml-resource-configuration-guidelines" "values.yaml"
-  click Node2g "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#configmap-configmapyaml-resource-configuration-guidelines" "configmap.yaml"
-  click Node2h "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#externalsecret-externalsecretyaml-resource-configuration-guidelines" "externalsecret.yaml"
-  click Node2c "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#externalsecret-externalsecretyaml-resource-configuration-guidelines" "keyvault"
-  click Node2i "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#role-rolesyaml-resource-configuration-guidelines" "roles.yaml"
-  click Node2j "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#rolebinding-rolebindingyaml-resource-configuration-guidelines" "roleBinding.yaml"
-  click Node2k "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#serviceaccount-serviceaccountyaml-resource-configuration-guidelines" "serviceAccount.yaml"
-  click Node2l "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#deployment-deploymentyaml-resource-configuration-guidelines" "deployment.yaml"
-  click Node2q "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#cronjob-cronjobyaml-resource-configuration-guidelines" "cronjob.yaml"
-  click Node2m "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#service-serviceyaml-resource-configuration-guidelines" "service.yaml"
-  click Node2n "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#option-1-istio-virtualservice-for-service-mesh-based-service-resource-configuration-guidelines" "istio-virtualservice.yaml"
-  click Node2o "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#option-2-openshift-route-for-non-service-mesh-based-service-resource-configuration-guidelines" "route.yaml"
-  click Node2r "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#documentdatabase-cosmosdb-claimyaml-resource-configuration-guidelines" "Database Resource"
-  click Node2s "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/helm-chart-for-app-ocp-deployment.md#kafkatopic-kafka-topicyaml-resource-configuration-guidelines" "Kafka Topic Resource"
   end
 
   subgraph "Activities to Setup and Integrate with External Dependencies"
