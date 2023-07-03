@@ -1,7 +1,7 @@
 # Guidelines for container based Java applications
 
 ## A - Java Framework 
-The use case case lambda functions are implemented using a combination of Java 8,Java 11 and the AWS SDK.
+The use case lambda functions are implemented using a combination of Java 8,Java 11 and the AWS SDK.
 
 During the migration we have:
   1) Migrated the codebase of the services to Quarkus Java containers on Openshift Azure and we are using the Azure SDK and Java 11.
@@ -134,7 +134,7 @@ An intermediate step would be to use the Red Hat OpenJDK 11 base images.
 
 #### `Dockerfile` for build
 
-Each application will define a `Dockerfile` (see an example: [Rest quickstart Dockerfile](../quickstart-lambda-to-quarkus-rest/Dockerfile) which will be used to place on top of the `registry.access.redhat.com/ubi8/openjdk-11:1.11` base image the application binaries and configurations required.
+Each application will define a `Dockerfile` (see an example: [Rest quickstart Dockerfile](../quickstart-lambda-to-quarkus-rest/Dockerfile)) which will be used to place on top of the `registry.access.redhat.com/ubi8/openjdk-11:1.11` base image the application binaries and configurations required.
 1. for local docker based builds and testing see (see: [Guidelines for building application and any external dependency containers for local functional tests](local-container-building-fort-testing.md))
 2. for the pipeline based build during `Continuous Integration (CI)`  see :warning: TO BE DEFINED
 
@@ -143,9 +143,9 @@ Each application will define a `Dockerfile` (see an example: [Rest quickstart Do
 
 For the containerized Application Deployment the following deployment types can be utilized
 
-#### Deployment
+#### Kubernetes Deployment
 
-For long running applications use this type and see examples in (:warning: TODO based on skeleton) [deployment.yaml](https://github.com/cariad-cloud/residency-sim-data-handler/blob/main/chart/templates/deployment.yaml)
+For long running applications use this Kubernetes Deployment type (see example in [deployment.yaml](../quickstart-lambda-to-quarkus-rest/chart/templates/deployment.yaml))
 * Ensure there is 
   * a `ServiceAccountName`
   * `probes` (see below)
@@ -155,7 +155,7 @@ For long running applications use this type and see examples in (:warning: TODO 
 
 #### Kubernetes CronJob
 
-For a Job type application that needs to start at pre-determined intervals, run and shutdown use this type and see examples in (:warning: TODO based on skeleton) [cronjob.yaml](https://github.com/cariad-cloud/residency-vw-nginx-certificate-lambda/blob/main/chart/templates/cronjob.yaml)
+For a Job type application that needs to start at pre-determined intervals, run and shutdown use this type and see examples in (see example [cronjob.yaml](../quickstart-lambda-to-quarkus-cronjob/chart/templates/cronjob.yaml)
 * Ensure there is 
   * a `ServiceAccountName`
   * `probes` (see below)
@@ -163,13 +163,7 @@ For a Job type application that needs to start at pre-determined intervals, run 
   * `labels` configuration (see below)
   * `annotations` configuration including for metrics/logging (see below)   
 
-#### Stateful Sets
 
-:warning: Not Used
-
-#### KNative
-
-:warning: Not Used
 
 ### B3 - Complete Deployment Contents 
 #### Probes
@@ -180,7 +174,7 @@ Non-traffic handling components e.g. `Jobs` don't need `readiness` probes but do
 `Startup` probes only are required for slow starting containers. They provide a way to defer the execution of `liveness` and `readiness` probes until a container indicates it’s able to handle them.  
 Kubernetes won’t direct the other probe types to a container if it has a `startup` probe that hasn’t yet succeeded. It aims to reduce superfluous load on the cluster by blocking the execution of `readiness`/`liveness` probes until the application is capable of servicing these probes.
 
-**Important:** Ensure you configure according to your application's behavior the timings of the healthchecks.
+>**Important:** Ensure you configure according to your application's behavior the timings of the healthchecks.
 
 See :
 1. [Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
@@ -191,13 +185,12 @@ See :
 2. [Quarkus Health](https://quarkus.io/guides/smallrye-health)
 3. [SpringBoot Actuator](https://docs.spring.io/spring-boot/docs/2.3.0.RELEASE/reference/html/production-ready-features.html#production-ready-kubernetes-probes)
 
-:bangbang: Decision: **Quarkus Health** & **Probes will be enforced as part of a future enhancement of the deployment pipeline.**
-
 
 #### Resource management
+
 At its core Kubernetes is concerned about managing resources, primarily CPU and memory so that it can assign pods to execute on worker nodes. 
 To help with scheduling Pods can specify their CPU and memory needs via resource requests and limits.  
-The combination of Requests & Limits is key to optimizing the performance of the container platform and ensuring that Pods are not artibrarly terminated when resources are under pressure.  
+The combination of Requests & Limits is key to optimizing the performance of the container platform and ensuring that Pods are not arbitrarily terminated when resources are under pressure.  
 At a minimum CPU and Memory requests should be configured for pods, eg:
 
 ```
