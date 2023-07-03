@@ -94,8 +94,8 @@ graph TB
   Node1d -- Optional --> Node3a[External Dependencies]
   Node1e -- Optional --> Node3a[External Dependencies]
   Node1f -- Optional --> Node3a[External Dependencies]
-  click Node1a "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/container-guidelines.md#a1---application-configuration" "App Configuration"
-  click Node1b "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/container-guidelines.md#a2---application-metrics" "Setup Application Metrics"
+  click Node1a "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/container-guidelines.md#a1-application-configuration" "App Configuration"
+  click Node1b "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/container-guidelines.md#a2-application-metrics" "Setup Application Metrics"
   click Node1c "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/-/tree/main/quickstart-lambda-to-quarkus-cronjob#migrating-a-job-based-lambda-to-quarkus-application" "Start Migrating a CronJob"
   click Node1d "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/-/tree/main/quickstart-lambda-to-quarkus-rest#migrating-a-rest-api-based-lambda-to-quarkus-application" "Start Migrating a Rest Service"
   click Node1e "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/-/tree/main/quickstart-lambda-to-quarkus-scheduled#migrating-a-scheduled-based-repeatable-running-lambda-to-quarkus-application" "Start Migrating a Scheduled Service"
