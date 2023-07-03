@@ -1,10 +1,10 @@
 # Guidelines for container based Java applications
 
 ## A - Java Framework 
-The current wireless case lambda functions are implemented using a combination of Java 8,Java 11 and the AWS SDK.
+The use case case lambda functions are implemented using a combination of Java 8,Java 11 and the AWS SDK.
 
-During the residency we have:
-  1) Migrated the codebase of the residency services to Azure and we are using the Azure SDK and Java 11.
+During the migration we have:
+  1) Migrated the codebase of the services to Quarkus Java containers on Openshift Azure and we are using the Azure SDK and Java 11.
   2) For the base Java Framework we are using [Red Hat Quarkus Build](https://access.redhat.com/documentation/en-us/red_hat_build_of_quarkus) using https://code.quarkus.redhat.com/ libraries from the framework
   3) Azure SDK Asynchronous Programming (https://docs.microsoft.com/en-us/azure/developer/java/sdk/async-programming)
 
@@ -28,19 +28,25 @@ Criteria:
 
 ### A1 - Application configuration
 
+#### Configuration options
+1. Quarkus Secrets & Configuration (https://quarkus.io/guides/kubernetes-config)
+2. Environment Variables
+3. Java System Properties
+
+Further Documentation:
+1. [ConfigMaps](https://docs.openshift.com/container-platform/4.11/nodes/pods/nodes-pods-configmaps.html)
+2. [Secrets](https://docs.openshift.com/container-platform/4.11/nodes/pods/nodes-pods-secrets.html)
+3. [Quarkus config map reload documentation](https://github.com/quarkusio/quarkus/discussions/23133)
+
 :bangbang: Decision: **Quarkus Secrets will be loaded via Kubernetes API**
 
 #### Implementation - See *[Use Plain K8s ConfigMap for passing non-sensitive configuration information](configs-handling.md)*
-* Applications will be configured via a combination of kubernetes `ConfigMaps`[(1)](https://docs.openshift.com/container-platform/4.11/nodes/pods/nodes-pods-configmaps.html) and `environment` variables.
+* Non-sensitive application configuration will be provided via a combination of kubernetes `ConfigMaps`[(1)](https://docs.openshift.com/container-platform/4.11/nodes/pods/nodes-pods-configmaps.html) and `environment` variables.
   * During development stages configs are stored in `src/main/resources/application.properties` (with `%dev`, `%test`, `%prod` prefix depending on the target profile)
   * In higher environments move them to a `ConfigMap` OCP Resource for deployment in higher environments.
 * While a config map change can be propagated to the `POD` it is the responsibility of the pod to detect this change and reload, this is not performed automatically.
 * **For implementation follow:** [Handling non-Sensitive Configs with `ConfigMap`](configs-handling.md)
 
-##### Configuration options 
-1. Quarkus Secrets & Configuration (https://quarkus.io/guides/kubernetes-config)
-2. Environment Variables
-3. Java System Properties
 
 #### Implementation - See *[Use Plain K8s secrets for passing sensitive information](secrets-handling.md)*
 * Sensitive configurations such as keys, credentials etc. will be done via Kubernetes `Secrets`[(2)](https://docs.openshift.com/container-platform/4.11/nodes/pods/nodes-pods-secrets.html).
@@ -48,10 +54,6 @@ Criteria:
     * In higher environments move them to `Secret` OCP Resource for deployment in higher environments.
 * **For implementation follow:** [Handling Sensitive Configs with `Secret`](secrets-handling.md)
 
-Further Documentation:
-1. [ConfigMaps](https://docs.openshift.com/container-platform/4.11/nodes/pods/nodes-pods-configmaps.html)
-2. [Secrets](https://docs.openshift.com/container-platform/4.11/nodes/pods/nodes-pods-secrets.html)
-3. [Quarkus config map reload documentation](https://github.com/quarkusio/quarkus/discussions/23133)
 
 ### A2 - Application metrics
 
@@ -105,12 +107,11 @@ import io.quarkus.scheduler.Scheduled;
 
 ### A3 - Application Trace Implementation
 
-* **TBD**
 
 #### Trace Implementation
 
-* **TBD**
-
+* Service Mesh based network traces captured and forwarded by `istio-proxy` (for production setup see [Red Hat Openshift Service Mesh ebook](https://www.redhat.com/en/resources/getting-started-with-openshift-service-mesh-ebook)) 
+* Applications to generate own additional traces
 
 ## B - Package and Deploy
 
@@ -133,7 +134,7 @@ An intermediate step would be to use the Red Hat OpenJDK 11 base images.
 
 #### `Dockerfile` for build
 
-Each application will define a `Dockerfile` (see an example: https://github.com/cariad-cloud/residency-hello-cosmos/blob/main/Dockerfile) which will be used to place on top of the `registry.access.redhat.com/ubi8/openjdk-11:1.11` base image the application binaries and configurations required.
+Each application will define a `Dockerfile` (see an example: [Rest quickstart Dockerfile](../quickstart-lambda-to-quarkus-rest/Dockerfile) which will be used to place on top of the `registry.access.redhat.com/ubi8/openjdk-11:1.11` base image the application binaries and configurations required.
 1. for local docker based builds and testing see (see: [Guidelines for building application and any external dependency containers for local functional tests](local-container-building-fort-testing.md))
 2. for the pipeline based build during `Continuous Integration (CI)`  see :warning: TO BE DEFINED
 
