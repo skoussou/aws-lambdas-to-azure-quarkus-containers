@@ -155,7 +155,7 @@ For long running applications use this Kubernetes Deployment type (see example i
 
 #### Kubernetes CronJob
 
-For a Job type application that needs to start at pre-determined intervals, run and shutdown use this type and see examples in (see example [cronjob.yaml](../quickstart-lambda-to-quarkus-cronjob/chart/templates/cronjob.yaml)
+For a Job type application that needs to start at pre-determined intervals, run and shutdown use this type and see examples in (see example [cronjob.yaml](../quickstart-lambda-to-quarkus-cronjob/chart/templates/cronjob.yaml)).
 * Ensure there is 
   * a `ServiceAccountName`
   * `probes` (see below)
@@ -216,8 +216,8 @@ Each application must use, at a minimum, the default set of kubernetes labels (2
 **Note:** Be aware of kubernetes naming constraints when defining labels https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
 
 See :
-1. [Labels] (https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
-2. [Default Labels] (https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/)
+1. [Labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
+2. [Default Labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/)
 
 ##### Annotations
 * Annotations are a method to attach non-Kubernetes specific data e.g. metadata to kubernetes resources.  
