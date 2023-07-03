@@ -5,7 +5,7 @@
   - [A1 - Application configuration](###A1---Application-configuration)
   - [A2 - Application metrics](###A2---Application metrics)
   - [A3 - Application Trace Implementation](###A3---Application-Trace-Implementation)
-- [B - Package and Deploy](##-B---Package-and-Deploy)
+- [B - Package and Deploy](#b-package-and-deploy)
   - [B1 - Java runtime base image & Docker Build](###B1---Java-runtime-base-image-&-Docker-Build)
   - [B2 - Deployment Types](###B2---Deployment-Types)
   - [B3 - Complete Deployment Contents](###B3---Complete-Deployment-Contents)
