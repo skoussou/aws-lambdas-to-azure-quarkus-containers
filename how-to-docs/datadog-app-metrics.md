@@ -14,7 +14,7 @@ See also
 3. If your application is inside a Service Mesh, the Datadog agent also needs to be associated with the same Service Mesh. Otherwise the Datadog agent cannot reach your pods.
 
 ## Configuration
-First add the following dependency in your quarkus pom.xml. This will set up a scraping endpoint in your quarkus application that will be populated with metrics, located att `localhost:8080/q/metrics`
+First add the following dependency in your quarkus pom.xml. This will set up a scraping endpoint in your quarkus application that will be populated with metrics, located at `localhost:8080/q/metrics`
 ```xml
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -22,7 +22,7 @@ First add the following dependency in your quarkus pom.xml. This will set up a s
       <!-- Set version in case you are not using a bom <version></version> -->
     </dependency>
 ```
-Next - add reporting of a metric in your application by injecting the MeterRegistry and using it to report a metric. In this example it's a simple counter.
+Next - add reporting of a metric in your application by injecting the `MeterRegistry` and using it to report a metric. In this example it's a simple counter.
 ```java
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tags;
@@ -42,7 +42,7 @@ Refer to the Micrometer documentation of what can be reported through the regist
 
 Finally - we will add annotations for autodiscovery so that Datadog knows that we want to report a metric. This is done in the resource that sets up your Pod (such as `Deployment`, `CronJob`, etc). There are two ways of doing this depending on if you are in a Service Mesh or not.
 
-In the non-service mesh method you simply tell Datadog to scrape the `/q/metrics` endpoint for the metrics you need.
+In the _non-service mesh method_ you simply tell Datadog to scrape the `/q/metrics` endpoint for the metrics you need.
 ```yaml
       annotations:
         ad.datadoghq.com/<REPLACE_WITH_CONTAINER_NAME>.checks: |
@@ -59,7 +59,7 @@ In the non-service mesh method you simply tell Datadog to scrape the `/q/metrics
           }
 
 ```
-In the service mesh method you will tell ServiceMesh to scrape the `/q/metrics` endpoint and add them to the prometheus endpoint, which you then instruct Datadog to scrape instead of /q/metrics. Note that this approach is optional - but will allow you to access more metrics from the same scraping endpoint as well.
+In the _service mesh method_ you will tell ServiceMesh to scrape the `/q/metrics` endpoint and add them to the prometheus endpoint, which you then instruct Datadog to scrape instead of `/q/metrics`. Note that this approach is optional - but will allow you to access more metrics from the same scraping endpoint as well.
 ```yaml
       annotations:
         prometheus.io/path: /q/metrics
@@ -94,7 +94,7 @@ When these changes have been deployed you should be able to locate the reported 
 
 ## Examples
 
-Below is a complete deployment example (taken from a Helm chart so contains some value substitution)
+Below is a complete deployment example
 ```yaml
 ---
 kind: Deployment
@@ -132,7 +132,7 @@ spec:
               "instances": [
                   {
                     "openmetrics_endpoint": "http://%%host%%:8080/q/metrics",
-                    "namespace": "sim.data",
+                    "namespace": "lambdas-playground",
                     "metrics": [ "poll_triggered" ]
                   }
               ]
