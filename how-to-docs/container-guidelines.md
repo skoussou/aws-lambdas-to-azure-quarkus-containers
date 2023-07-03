@@ -72,7 +72,7 @@ via a prometheus metrics scraping endpoint. Prometheus is extensible to allow cu
 
 #### Counter Metric Implementation
 
-For an actual implementation look at [HelloCosmosResource.java](../quickstart-lambda-to-quarkus-rest/src/main/java/com/redhat/cloudnative/hellocosmos/HelloCosmosResource.java)  [hello-cosmos HelloCosmosResource.java](https://github.com/cariad-cloud/residency-hello-cosmos/blob/bbc887f834e10a0102b78806ba244e1d81c00df3/src/main/java/com/wirelesscar/vw/residency/hellocosmos/HelloCosmosResource.java#L42)
+For an actual implementation look at [HelloCosmosResource.java](../quickstart-lambda-to-quarkus-rest/src/main/java/com/redhat/cloudnative/hellocosmos/HelloCosmosResource.java) 
 
 * Step 1: Include Quarkus [Micrometer dependency](https://quarkus.io/guides/micrometer)
 
