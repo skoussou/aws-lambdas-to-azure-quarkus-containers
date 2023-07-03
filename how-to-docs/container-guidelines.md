@@ -7,7 +7,6 @@ During the residency we have:
   1) Migrated the codebase of the residency services to Azure and we are using the Azure SDK and Java 11.
   2) For the base Java Framework we are using [Red Hat Quarkus Build](https://access.redhat.com/documentation/en-us/red_hat_build_of_quarkus) using https://code.quarkus.redhat.com/ libraries from the framework
   3) Azure SDK Asynchronous Programming (https://docs.microsoft.com/en-us/azure/developer/java/sdk/async-programming)
-  4) Finally we are using a [residency BOM](using-bom.md) to standardise the version definition 
 
 Criteria:
 1. Designed and built exclusively for cloud native development, with reduced memory consumption and startup time.
@@ -31,27 +30,27 @@ Criteria:
 
 :bangbang: Decision: **Quarkus Secrets will be loaded via Kubernetes API**
 
-#### Implementation - See *Use Plain K8s ConfigMap for passing non-sensitive configuration information*
-* Applications will be configured via a combination of kubernetes `ConfigMaps`[(1)](https://docs.openshift.com/container-platform/4.10/nodes/pods/nodes-pods-configmaps.html) and `environment` variables.
+#### Implementation - See *[Use Plain K8s ConfigMap for passing non-sensitive configuration information](configs-handling.md)*
+* Applications will be configured via a combination of kubernetes `ConfigMaps`[(1)](https://docs.openshift.com/container-platform/4.11/nodes/pods/nodes-pods-configmaps.html) and `environment` variables.
   * During development stages configs are stored in `src/main/resources/application.properties` (with `%dev`, `%test`, `%prod` prefix depending on the target profile)
-  * In higher environments move them to a `ConfigMap` OCP Resource for deployment in higher environments.  
-* **For implementation follow:** [Handling Sensitive Configs with `Secret`](secrets-handling.md)
+  * In higher environments move them to a `ConfigMap` OCP Resource for deployment in higher environments.
+* While a config map change can be propagated to the `POD` it is the responsibility of the pod to detect this change and reload, this is not performed automatically.
+* **For implementation follow:** [Handling non-Sensitive Configs with `ConfigMap`](configs-handling.md)
 
 ##### Configuration options 
 1. Quarkus Secrets & Configuration (https://quarkus.io/guides/kubernetes-config)
 2. Environment Variables
 3. Java System Properties
 
-#### Implementation - See *Use Plain K8s secrets for passing sensitive information*
-* Sensitive configurations such as keys, credentials etc. will be done via Kubernetes `Secrets`[(2)](https://docs.openshift.com/container-platform/4.10/nodes/pods/nodes-pods-secrets.html).
+#### Implementation - See *[Use Plain K8s secrets for passing sensitive information](secrets-handling.md)*
+* Sensitive configurations such as keys, credentials etc. will be done via Kubernetes `Secrets`[(2)](https://docs.openshift.com/container-platform/4.11/nodes/pods/nodes-pods-secrets.html).
     * During development stages configs are stored in `src/main/resources/application.properties`  (with `%dev`, `%test`, `%prod` prefix depending on the target profile)
-    * In higher environments move them to `Secret` OCP Resource for deployment in higher environments.  
-* While a config map change can be propagated to the `POD` it is the responsibility of the pod to detect this change and reload, this is not performed automatically.
-* **For implementation follow:** [Handling non-Sensitive Configs with `ConfigMap`](configs-handling.md)
+    * In higher environments move them to `Secret` OCP Resource for deployment in higher environments.
+* **For implementation follow:** [Handling Sensitive Configs with `Secret`](secrets-handling.md)
 
 Further Documentation:
-1. [ConfigMaps](https://docs.openshift.com/container-platform/4.10/nodes/pods/nodes-pods-configmaps.html)
-2. [Secrets](https://docs.openshift.com/container-platform/4.10/nodes/pods/nodes-pods-secrets.html)
+1. [ConfigMaps](https://docs.openshift.com/container-platform/4.11/nodes/pods/nodes-pods-configmaps.html)
+2. [Secrets](https://docs.openshift.com/container-platform/4.11/nodes/pods/nodes-pods-secrets.html)
 3. [Quarkus config map reload documentation](https://github.com/quarkusio/quarkus/discussions/23133)
 
 ### A2 - Application metrics
