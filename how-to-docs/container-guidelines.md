@@ -1,10 +1,10 @@
 # Guidelines for creation of container based Java applications
 
-- [A - Java Framework ](##A---Java Framework)
-  - [Reference Library](###Reference-Library)
-  - [A1 - Application configuration](###A1---Application-configuration)
-  - [A2 - Application metrics](###A2---Application metrics)
-  - [A3 - Application Trace Implementation](###A3---Application-Trace-Implementation)
+- [A - Java Framework ](#a-java-Framework)
+  - [Reference Library](#reference-library)
+  - [A1 - Application configuration](#a1-application-configuration)
+  - [A2 - Application metrics](#a2-application-metrics)
+  - [A3 - Application Trace Implementation](#a3-application-trace-implementation)
 - [B - Package and Deploy](#b-package-and-deploy)
   - [B1 - Java runtime base image & Docker Build](###B1---Java-runtime-base-image-&-Docker-Build)
   - [B2 - Deployment Types](###B2---Deployment-Types)
