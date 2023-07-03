@@ -11,7 +11,7 @@ This guide will show you how to set up log forwarding from your pod-based applic
 6. The logs your application produces are compatible with a log index on the Datadog side
 
 ## Configuration
-In the resource that sets up your Pod (such as Deployment, CronJob, etc) you need to set up autodiscovery annotations for your containers. The relevant annotation looks like this:
+In the resource that sets up your Pod (such as `Deployment`, `CronJob`, etc) you need to set up autodiscovery annotations for your containers. The relevant annotation looks like this:
 ```yaml
 ad.datadoghq.com/<REPLACE_WITH_CONTAINER_NAME>.logs: |
     [
@@ -94,38 +94,28 @@ spec:
           imagePullPolicy: Always
           image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.version }}
           volumeMounts:
-          - name: {{ .Values.name }}-application-properties
-            mountPath: /deployments/config
-          - name: sim-reg-user-keystore
-            mountPath: /deployments/keystore            
-          - name: wc-test-kafka-cluster-truststore
-            mountPath: /deployments/truststore 
+            - name: {{ .Values.name }}-application-properties
+              mountPath: /deployments/config
+            - name: wc-test-kafka-cluster-truststore
+              mountPath: /deployments/truststore
           envFrom:
             - secretRef:
                 name: {{ .Values.name }}-connection
-            - secretRef:
-                name: {{ .Values.config.secrets.m2mactorsecret.k8s.secret }}
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
       securityContext: {}
       schedulerName: default-scheduler
       volumes:
-        - name: {{ .Values.config.secrets.m2mactorsecret.k8s.secret }}
-          secret:
-            secretName: {{ .Values.config.secrets.m2mactorsecret.k8s.secret }}
-        - name:  {{ .Values.config.cosmos.connection.secret.name }}        
+        - name:  {{ .Values.config.cosmos.connection.secret.name }}
           secret:
             secretName: {{ .Values.config.cosmos.connection.secret.name }}
         - name: {{ .Values.name }}-application-properties
           configMap:
             name: {{ .Values.name }}-application-properties
-        - name: sim-reg-user-keystore
-          secret:
-            secretName: sim-reg-user-keystore
         - name: wc-test-kafka-cluster-truststore
-          secret:
-            secretName: wc-test-kafka-cluster-truststore                                    
+        secret:
+          secretName: wc-test-kafka-cluster-truststore
   strategy:
     type: RollingUpdate
     rollingUpdate:
