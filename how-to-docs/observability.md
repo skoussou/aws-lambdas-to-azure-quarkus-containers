@@ -3,21 +3,21 @@
 ## Context and Problem Statement
 
 Applications need to emit monitoring data in the form of logs, metrics and traces for inter/intra service calls gathered, analyzed and visualized for functional and non-functional validation for development and higher environment operations.
-Cariad/WirelessCar need to gather, monitor, alert on metrics from the application landscape along with logs and possibly traces.
+Organizations need to gather, monitor, alert on metrics from the application landscape along with logs and possibly traces.
 
 
 ## Considered Options
 
 * Openshift Service Mesh in development gathering metrics + traces and visualizing them via KIALI, Prometheus, Grafana, Jaeger (all part of Service Mesh control plane)
-* Datadog agent scraping Service Mesh `istio-proxy` prometheus metrics /stats/prometheus for application metrics, plus collecting openshift/kubernetes environment metrics. Furthermore, the Datadog agent could also collect traces and logs from the pods.
-* Using DogStatsd to send metrics to Datadog agent through the Node host, directly from the Pods/application. [See overview here.](https://docs.datadoghq.com/developers/dogstatsd/?tabs=hostagent)
-* Using fluentd to forward logs to the Datadog API.
+* Datadog agent scraping Service Mesh `istio-proxy` prometheus metrics `/stats/prometheus` for application metrics, plus collecting openshift/kubernetes environment metrics. Furthermore, the Datadog agent could also collect traces and logs from the pods.
+* Using `DogStatsd` to send metrics to Datadog agent through the Node host, directly from the Pods/application. [See overview here.](https://docs.datadoghq.com/developers/dogstatsd/?tabs=hostagent)
+* Using `fluentd` to forward logs to the Datadog API.
 
 ## Decision Outcome
 
 We have decided to focus on the Service Mesh/ISTIO dependent approach with the following setup:
-* `labs-dev` namespace: will be part of Openshift Service Mesh (OSSM) `istio-system-dev` and will have metrics and traces collected from OSSM Prometheus
-* `labs-test`, `labs-preprod` namespaces: will be part of Openshift Service Mesh (OSSM) `istio-system-prod` and will have metrics only scraped by Datadog
+* `dev` namespace: will be part of Openshift Service Mesh (OSSM) `istio-system-dev` and will have metrics and traces collected from OSSM Prometheus
+* `test`, `preprod` namespaces: will be part of Openshift Service Mesh (OSSM) `istio-system-preprod` and will have metrics only scraped by Datadog
 
 Pros:
 * Auto-discovery and collection of exposed custom metrics from applications within Service Mesh.
@@ -25,15 +25,15 @@ Pros:
 
 Cons:
 * If an application cannot be part of the Service Mesh it will need an alternative approach to expose metrics and tracing
-* Seemingly not possible to use an "opt-in" approach for scraping. The Datadog agent gathers everything that is not explicitly excluded. This could have cost implications on the Datadog side.
+* Currently no "opt-in" approach for scraping. The Datadog agent gathers everything that is not explicitly excluded. This could have cost implications on the Datadog side.
 
 ## How To
- `labs-dev` namespace: Collect metrics from the following 2 paths
+ `dev` namespace: Collect metrics from the following 2 paths
   * `pod-ip:15090/stats/prometheus`: exposed by `istio-proxy`
   * `pod-port/metrics`: exposed by the application container
 
-`labs-test`, `labs-preprod` namespace:   
-* Applications will have to contain the following annotations (in the order given) to expose both `istio-proxy` and application metrics toghether
+`test`, `preprod` namespace:   
+* Applications will have to contain the following annotations (in the order given) to expose both `istio-proxy` and application metrics together
 ```yaml
 spec:
   replicas: 1
