@@ -83,33 +83,28 @@ spec:
           imagePullPolicy: Always
           image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.version }}
           volumeMounts:
-          - name: {{ .Values.name }}-application-properties
-            mountPath: /deployments/config          
-          - name: wc-test-kafka-cluster-truststore
-            mountPath: /deployments/truststore 
+            - name: {{ .Values.name }}-application-properties
+              mountPath: /deployments/config
+            - name: wc-test-kafka-cluster-truststore
+              mountPath: /deployments/truststore
           envFrom:
             - secretRef:
                 name: {{ .Values.name }}-connection
-            - secretRef:
-                name: {{ .Values.config.secrets.m2mactorsecret.k8s.secret }}
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
       securityContext: {}
       schedulerName: default-scheduler
       volumes:
-        - name: {{ .Values.config.secrets.m2mactorsecret.k8s.secret }}
-          secret:
-            secretName: {{ .Values.config.secrets.m2mactorsecret.k8s.secret }}
-        - name:  {{ .Values.config.cosmos.connection.secret.name }}        
+        - name:  {{ .Values.config.cosmos.connection.secret.name }}
           secret:
             secretName: {{ .Values.config.cosmos.connection.secret.name }}
         - name: {{ .Values.name }}-application-properties
           configMap:
             name: {{ .Values.name }}-application-properties
         - name: wc-test-kafka-cluster-truststore
-          secret:
-            secretName: wc-test-kafka-cluster-truststore                                    
+        secret:
+          secretName: wc-test-kafka-cluster-truststore
   strategy:
     type: RollingUpdate
     rollingUpdate:
