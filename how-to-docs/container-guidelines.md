@@ -6,10 +6,10 @@
   - [A2 - Application metrics](#a2-application-metrics)
   - [A3 - Application Trace Implementation](#a3-application-trace-implementation)
 - [B - Package and Deploy](#b-package-and-deploy)
-  - [B1 - Java runtime base image & Docker Build](###B1---Java-runtime-base-image-&-Docker-Build)
-  - [B2 - Deployment Types](###B2---Deployment-Types)
-  - [B3 - Complete Deployment Contents](###B3---Complete-Deployment-Contents)
-  - [B4 -Service](###B4---Service)
+  - [B1 - Java runtime base image & Docker Build](#b1-java-runtime-base-image-&-Docker-Build)
+  - [B2 - Deployment Types](#b2-deployment-types)
+  - [B3 - Complete Deployment Contents](#b3-complete-deployment-contents)
+  - [B4 -Service](#b4-service)
     
 
 ## A - Java Framework 
