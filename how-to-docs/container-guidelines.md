@@ -1,4 +1,16 @@
-# Guidelines for container based Java applications
+# Guidelines for creation of container based Java applications
+
+- [A - Java Framework ](##A---Java Framework)
+  - [Reference Library](###Reference-Library)
+  - [A1 - Application configuration](###A1---Application-configuration)
+  - [A2 - Application metrics](###A2---Application metrics)
+  - [A3 - Application Trace Implementation](###A3---Application-Trace-Implementation)
+- [B - Package and Deploy](##-B---Package-and-Deploy)
+  - [B1 - Java runtime base image & Docker Build](###B1---Java-runtime-base-image-&-Docker-Build)
+  - [B2 - Deployment Types](###B2---Deployment-Types)
+  - [B3 - Complete Deployment Contents](###B3---Complete-Deployment-Contents)
+  - [B4 -Service](###B4---Service)
+    
 
 ## A - Java Framework 
 The use case lambda functions are implemented using a combination of Java 8,Java 11 and the AWS SDK.
@@ -239,7 +251,7 @@ sidecar.istio.io/inject: '{{ .Values.service_mesh_enabled }}'
 * See [Datadog - Report custom business metrics](datadog-app-metrics.md)
 * See [Datadog - Forward application logs](datadog-log-forwarding.md)
 
-### B4 -Service
+### B4 -S ervice
 
  * For the exposure of an Application's endpoints to client services the creation of a [`Service`](https://docs.openshift.com/online/pro/architecture/core_concepts/pods_and_services.html#services) is required and an example can be found at [service.yaml](../quickstart-lambda-to-quarkus-rest/chart/templates/service.yml)
 
