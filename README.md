@@ -76,8 +76,8 @@ graph TB
   Node3a[External Dependencies] --> Node3c[Integrating with Kafka]
   Node3b[Integrating with CosmosDB] -- Code Ready --> Node5a
   Node3c[Integrating with Kafka]  -- Code Ready --> Node5a
-  click Node3b "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/migrate-business-application-code-in-quarkus.md#connecting--interacting-to-a-cosmosdb" "CosmosDB"
-  click Node3c "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/how-to-docs/migrate-business-application-code-in-quarkus.md#connecting--interacting-with-kafka" "Kafka"
+  click Node3b "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/-/tree/main/quickstart-lambda-to-quarkus-rest#code-migrations" "CosmosDB"
+  click Node3c "https://gitlab.consulting.redhat.com/tech-specialists/aws-lambdas-to-azure-quakus-containers/blob/main/quickstart-lambda-to-quarkus-kafka/README.md#code-migrations" "Kafka"
   end
 
   subgraph "Migrate new Service Code from Lambda to Quarkus"
