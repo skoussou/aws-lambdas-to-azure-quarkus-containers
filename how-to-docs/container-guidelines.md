@@ -228,7 +228,7 @@ e.g. "openshift.io/key:value" or "*.istio.io/key:value
 ###### Implementation of Service Mesh Annotations
 
 
-* Include an application in the mesh by adding the annotation in the relevant container's `metadata` section of the `deployment.yaml`. [Service Mesh pod annotations] (https://docs.openshift.com/container-platform/4.10/service_mesh/v2x/prepare-to-deploy-applications-ossm.html)
+* Include an application in the mesh by adding the annotation in the relevant container's `metadata` section of the `deployment.yaml`. [Service Mesh pod annotations](https://docs.openshift.com/container-platform/4.12/service_mesh/v2x/prepare-to-deploy-applications-ossm.html)
 
 ```YAML
 sidecar.istio.io/inject: '{{ .Values.service_mesh_enabled }}'
@@ -236,12 +236,12 @@ sidecar.istio.io/inject: '{{ .Values.service_mesh_enabled }}'
 
 ###### Implementation of Exposing to Datadog Annotations 
 
-* See [Datadog - Report custom business metrics](https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/datadog-app-metrics.md)
-* See [Datadog - Forward application logs](https://github.com/cariad-cloud/residency-docs/blob/main/how-to-docs/datadog-log-forwarding.md)
+* See [Datadog - Report custom business metrics](datadog-app-metrics.md)
+* See [Datadog - Forward application logs](datadog-log-forwarding.md)
 
 ### B4 -Service
 
- * For the exposure of an Application's endpoints to client services the creation of a [`Service`](https://docs.openshift.com/online/pro/architecture/core_concepts/pods_and_services.html#services) is required and an example can be found at [hello-cosmos/service.yaml](https://github.com/cariad-cloud/residency-hello-cosmos/blob/main/chart/templates/service.yml)
+ * For the exposure of an Application's endpoints to client services the creation of a [`Service`](https://docs.openshift.com/online/pro/architecture/core_concepts/pods_and_services.html#services) is required and an example can be found at [service.yaml](../quickstart-lambda-to-quarkus-rest/chart/templates/service.yml)
 
 
 
