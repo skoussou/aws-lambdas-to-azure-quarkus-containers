@@ -2,14 +2,14 @@
 
 - [A - Java Framework ](#a-java-Framework)
   - [Reference Library](#reference-library)
-  - [A1 - Application configuration](#a1-application-configuration)
-  - [A2 - Application metrics](#a2-application-metrics)
-  - [A3 - Application Trace Implementation](#a3-application-trace-implementation)
-- [B - Package and Deploy](#b-package-and-deploy)
-  - [B1 - Java runtime base image & Docker Build](#b1-java-runtime-base-image-&-Docker-Build)
-  - [B2 - Deployment Types](#b2-deployment-types)
-  - [B3 - Complete Deployment Contents](#b3-complete-deployment-configs)
-  - [B4 -Service](#b4-service)
+  - [A1 - Application configuration](#a1---application-configuration)
+  - [A2 - Application metrics](#a2---application-metrics)
+  - [A3 - Application Trace Implementation](#a3---application-trace-implementation)
+- [B - Package and Deploy](#b---package-and-deploy)
+  - [B1 - Java runtime base image & Docker Build](#b1---java-runtime-base-image-&-Docker-Build)
+  - [B2 - Deployment Types](#b2---deployment-types)
+  - [B3 - Complete Deployment Contents](#b3---complete-deployment-configs)
+  - [B4 - Service](#b4---service)
     
 
 ## A - Java Framework 
