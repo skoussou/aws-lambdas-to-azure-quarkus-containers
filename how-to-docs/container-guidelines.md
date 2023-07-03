@@ -8,7 +8,7 @@
 - [B - Package and Deploy](#b-package-and-deploy)
   - [B1 - Java runtime base image & Docker Build](#b1-java-runtime-base-image-&-Docker-Build)
   - [B2 - Deployment Types](#b2-deployment-types)
-  - [B3 - Complete Deployment Contents](#b3-complete-deployment-contents)
+  - [B3 - Complete Deployment Contents](#b3-complete-deployment-configs)
   - [B4 -Service](#b4-service)
     
 
@@ -177,7 +177,7 @@ For a Job type application that needs to start at pre-determined intervals, run 
 
 
 
-### B3 - Complete Deployment Contents 
+### B3 - Complete Deployment Configs 
 #### Probes
 
 Every traffic handling application running in a container must provide endpoints for kubernetes `readiness` and `liveness` probes(1). 
@@ -251,7 +251,7 @@ sidecar.istio.io/inject: '{{ .Values.service_mesh_enabled }}'
 * See [Datadog - Report custom business metrics](datadog-app-metrics.md)
 * See [Datadog - Forward application logs](datadog-log-forwarding.md)
 
-### B4 -S ervice
+### B4 - Service
 
  * For the exposure of an Application's endpoints to client services the creation of a [`Service`](https://docs.openshift.com/online/pro/architecture/core_concepts/pods_and_services.html#services) is required and an example can be found at [service.yaml](../quickstart-lambda-to-quarkus-rest/chart/templates/service.yml)
 
