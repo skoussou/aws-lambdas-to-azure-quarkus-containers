@@ -207,11 +207,8 @@ At a minimum CPU and Memory requests should be configured for pods, eg:
 See:
 1. Kubernetes Resource Management (https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
 
-:bangbang: Decision: **Resource limits will be enforced as part of a future enhancement of the deployment pipeline.**
-
 #### Container Labels & Annotations
 ##### Labels
-:bangbang: Decision: **Labels will be enforced as part of a future enhancement of the deployment pipeline.**
 
 Labels are an important concept in Kubernetes. Labels along with selector can be used for workload placement, affinity, service routing etc (1).  
 Each application must use, at a minimum, the default set of kubernetes labels (2). Additional labels can be added as required. 
