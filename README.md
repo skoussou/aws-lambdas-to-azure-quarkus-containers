@@ -58,7 +58,7 @@ graph TB
   Node3a[External Dependencies] --> Node3c[Integrating with Kafka]
   Node3b[Integrating with CosmosDB] -- Code Ready --> Node5a
   Node3c[Integrating with Kafka]  -- Code Ready --> Node5a
-  click Node3b "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/-/tree/main/quickstart-lambda-to-quarkus-rest#code-migrations" "CosmosDB"
+  click Node3b "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/tree/main/quickstart-lambda-to-quarkus-rest#code-migrations" "CosmosDB"
   click Node3c "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/quickstart-lambda-to-quarkus-kafka/README.md#code-migrations" "Kafka"
   end
 
