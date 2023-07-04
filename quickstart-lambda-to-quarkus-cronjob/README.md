@@ -32,7 +32,7 @@ This project attempts to be the simplest possible project that provides a manual
   ```
 
 
-* For a lambda which starts as the result of REST API call place the lambda code in [JobMain.java#run](src/main/java/com/redhat/cloudnative/token/madeup/JobMain.java).
+* For a lambda which starts as the result of a one-time Job place the lambda code in [JobMain.java#run](src/main/java/com/redhat/cloudnative/token/madeup/JobMain.java).
     ```JAVA
     @ApplicationScoped
     public class JobMain {

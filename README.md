@@ -66,8 +66,8 @@ graph TB
   Node1a[Setup Application Configurations]
   Node1a -- feed configs into --> Node2g[configmap.yaml]
   Node1a -- feed sensitive configs into --> Node2h[externalsecret.yaml]
-  Node1b[Setup Application Metrics]
-  Node1a --> Node1b[Setup Application Metrics]
+  Node1b[Setup Application Monitoring]
+  Node1a --> Node1b[Setup Application Monitoring]
   Node1b -- Option-1 --> Node1c[Migrating code into CronJob Quarkus Application Main]
   Node1b -- Option-2 --> Node1d[Migrating code into Long-running REST API Quarkus ApplicationScoped]
   Node1b -- Option-3 --> Node1e[Migrating code into Quarkus Scheduled]
@@ -77,7 +77,7 @@ graph TB
   Node1e -- Optional --> Node3a[External Dependencies]
   Node1f -- Optional --> Node3a[External Dependencies]
   click Node1a "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/container-guidelines.md#a1---application-configuration" "App Configuration"
-  click Node1b "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/container-guidelines.md#a2---application-metrics" "Setup Application Metrics"
+  click Node1b "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/container-guidelines.md#a2---application-metrics" "Setup Application Monitoring"
   click Node1c "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/tree/main/quickstart-lambda-to-quarkus-cronjob#migrating-a-job-based-lambda-to-quarkus-application" "Start Migrating a CronJob"
   click Node1d "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/tree/main/quickstart-lambda-to-quarkus-rest#migrating-a-rest-api-based-lambda-to-quarkus-application" "Start Migrating a Rest Service"
   click Node1e "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/tree/main/quickstart-lambda-to-quarkus-scheduled#migrating-a-scheduled-based-repeatable-running-lambda-to-quarkus-application" "Start Migrating a Scheduled Service"
