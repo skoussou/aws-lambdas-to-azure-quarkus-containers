@@ -78,9 +78,9 @@ graph TB
   Node1f -- Optional --> Node3a[External Dependencies]
   click Node1a "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/container-guidelines.md#a1---application-configuration" "App Configuration"
   click Node1b "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/how-to-docs/container-guidelines.md#a2---application-metrics" "Setup Application Metrics"
-  click Node1c "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/-/tree/main/quickstart-lambda-to-quarkus-cronjob#migrating-a-job-based-lambda-to-quarkus-application" "Start Migrating a CronJob"
-  click Node1d "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/-/tree/main/quickstart-lambda-to-quarkus-rest#migrating-a-rest-api-based-lambda-to-quarkus-application" "Start Migrating a Rest Service"
-  click Node1e "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/-/tree/main/quickstart-lambda-to-quarkus-scheduled#migrating-a-scheduled-based-repeatable-running-lambda-to-quarkus-application" "Start Migrating a Scheduled Service"
+  click Node1c "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/tree/main/quickstart-lambda-to-quarkus-cronjob#migrating-a-job-based-lambda-to-quarkus-application" "Start Migrating a CronJob"
+  click Node1d "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/tree/main/quickstart-lambda-to-quarkus-rest#migrating-a-rest-api-based-lambda-to-quarkus-application" "Start Migrating a Rest Service"
+  click Node1e "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/tree/main/quickstart-lambda-to-quarkus-scheduled#migrating-a-scheduled-based-repeatable-running-lambda-to-quarkus-application" "Start Migrating a Scheduled Service"
   click Node1f "https://github.com/skoussou/aws-lambdas-to-azure-quarkus-containers/blob/main/quickstart-lambda-to-quarkus-kafka/README.md#migrating-a-message-triggered-long-running-lambda-to-quarkus-application" "Start Migrating a Message Triggered Service"
   end
 
