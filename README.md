@@ -17,7 +17,9 @@ For this guide, we will assume that your Lambda service is called `banana` to ma
 
 ![High Level Migration FLow](images/HighLevelMigrationFlow-Lamda-to-Quarkus.png)
 
-### Detailed Migration Flow
+### Interactive Detailed Migration Flow
+
+NOTE: Pressing the links on the diagram will take you to the appropriate resource information
 
 ```mermaid
 graph TB
