@@ -19,7 +19,7 @@ For this guide, we will assume that your Lambda service is called `banana` to ma
 
 ### Interactive Detailed Migration Flow
 
-NOTE: Pressing the links on the diagram will take you to the appropriate resource information
+> **_NOTE:_** Pressing the links on the diagram will take you to the appropriate resource information
 
 ```mermaid
 graph TB
